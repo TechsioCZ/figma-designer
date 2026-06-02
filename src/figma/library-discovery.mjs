@@ -8,15 +8,19 @@ export async function discoverLibrary(options = {}) {
   const source = figma.mode === "fixture" ? "fixture" : "live_figma";
   const discoveredAt = toIsoTimestamp(options.now ?? new Date());
 
-  const [health, file, componentsPayload, componentSetsPayload, stylesPayload, variablesPayload] =
-    await Promise.all([
-      figma.health(),
-      figma.getFile(),
-      figma.getLocalComponents(),
-      figma.getLocalComponentSets(),
-      figma.getLocalStyles(),
-      figma.getVariables()
-    ]);
+  const [health, file] = await Promise.all([figma.health(), figma.getFile()]);
+  const endpointResults = await Promise.all([
+    readDiscoveryEndpoint(figma, "getLocalComponents", source, []),
+    readDiscoveryEndpoint(figma, "getLocalComponentSets", source, []),
+    readDiscoveryEndpoint(figma, "getLocalStyles", source, []),
+    readDiscoveryEndpoint(figma, "getVariables", source, { meta: { variableCollections: {}, variables: {} } })
+  ]);
+  const [componentsPayload, componentSetsPayload, stylesPayload, variablesPayload] = endpointResults.map(
+    (result) => result.payload
+  );
+  const endpointWarnings = endpointResults
+    .map((result) => result.warning)
+    .filter(Boolean);
 
   const fileKey = file.key ?? file.fileKey ?? health.fileKey ?? figma.fileKey ?? "unknown-file";
   const fileName = file.name ?? file.fileName ?? "Figma File";
@@ -148,6 +152,7 @@ export async function discoverLibrary(options = {}) {
     componentSets,
     variables,
     styles,
+    endpointWarnings,
     examples,
     approvedPatterns,
     runContextPatch: {
@@ -157,7 +162,8 @@ export async function discoverLibrary(options = {}) {
         discoveredAt,
         cachePath,
         nestingMapPath,
-        nodes: discoveryNodes
+        nodes: discoveryNodes,
+        endpointWarnings
       },
       variables: {
         collections: variables.collections.map((collection) => ({
@@ -181,6 +187,29 @@ export async function discoverLibrary(options = {}) {
       }
     }
   };
+}
+
+async function readDiscoveryEndpoint(figma, methodName, source, fallback) {
+  try {
+    return {
+      payload: await figma[methodName](),
+      warning: null
+    };
+  } catch (error) {
+    if (source !== "live_figma") {
+      throw error;
+    }
+
+    return {
+      payload: fallback,
+      warning: {
+        endpoint: methodName,
+        status: "unavailable",
+        errorName: error.name,
+        errorMessage: error.message
+      }
+    };
+  }
 }
 
 function normalizeComponent(component, context) {

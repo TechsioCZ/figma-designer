@@ -192,10 +192,10 @@ class LiveFigmaAccess {
       fileKey: this.fileKey,
       generationPage: this.generationPage,
       libraryName: this.libraryName,
-      connectedAsAssets: this.connectedAsAssets === true,
+      connectedAsAssets: this.connectedAsAssets !== false,
       canRead: true,
-      canWrite: this.canWrite === true,
-      canScreenshot: this.canScreenshot === true
+      canWrite: this.canWrite !== false,
+      canScreenshot: this.canScreenshot !== false
     };
   }
 

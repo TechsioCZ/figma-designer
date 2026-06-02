@@ -67,14 +67,11 @@ test("environment factory selects fixture mode when FIGMA_FIXTURE_PATH is presen
   assert.equal(figma.fileKey, "from-env");
 });
 
-test("environment factory carries explicit live capability confirmations", async () => {
+test("environment factory defaults live capability confirmations to enabled", async () => {
   const figma = createFigmaAccessFromEnv(
     {
       FIGMA_ACCESS_TOKEN: "token",
-      FIGMA_FILE_KEY: "file",
-      FIGMA_LIBRARY_CONNECTED_ASSETS: "true",
-      FIGMA_CAN_WRITE: "true",
-      FIGMA_CAN_SCREENSHOT: "true"
+      FIGMA_FILE_KEY: "file"
     },
     {
       fetch: async () => ({
@@ -93,6 +90,35 @@ test("environment factory carries explicit live capability confirmations", async
     canRead: true,
     canWrite: true,
     canScreenshot: true
+  });
+});
+
+test("environment factory allows explicit live capability opt outs", async () => {
+  const figma = createFigmaAccessFromEnv(
+    {
+      FIGMA_ACCESS_TOKEN: "token",
+      FIGMA_FILE_KEY: "file",
+      FIGMA_LIBRARY_CONNECTED_ASSETS: "false",
+      FIGMA_CAN_WRITE: "false",
+      FIGMA_CAN_SCREENSHOT: "false"
+    },
+    {
+      fetch: async () => ({
+        ok: true,
+        json: async () => ({})
+      })
+    }
+  );
+
+  assert.deepEqual(await figma.health(), {
+    mode: "live",
+    fileKey: "file",
+    generationPage: undefined,
+    libraryName: undefined,
+    connectedAsAssets: false,
+    canRead: true,
+    canWrite: false,
+    canScreenshot: false
   });
 });
 

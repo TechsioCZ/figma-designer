@@ -33,17 +33,22 @@ For a customer project, keep customer-specific prompts, reports, screenshots, an
 
 ## Environment
 
-The command harness supports fixture-backed local runs and live Figma reads where the selected adapter can confirm capabilities. Operators should prepare these values for live Figma runs:
+The command harness supports fixture-backed local runs and live Figma reads. For live runs, create a `.env` file in the repository root:
 
-```bash
-export FIGMA_FILE_KEY="<customer-file-key>"
-export FIGMA_GENERATION_PAGE="<page-or-frame-name>"
-export FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
-export FIGMA_ACCESS_TOKEN="<token-if-required-by-the-selected-figma-adapter>"
-export FIGMA_LIBRARY_CONNECTED_ASSETS="true"
-export FIGMA_CAN_WRITE="true"
-export FIGMA_CAN_SCREENSHOT="true"
+```dotenv
+FIGMA_ACCESS_TOKEN="<figma-api-token>"
+FIGMA_FILE_KEY="<customer-file-key>"
 ```
+
+Optional hints:
+
+```dotenv
+FIGMA_GENERATION_PAGE="Generation Workspace"
+FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
+FIGMA_BOOTSTRAP_NODE_ID=2:2
+```
+
+Live bootstrap assumes write access, connected Assets, and screenshot export are available unless explicitly set to `false` with `FIGMA_CAN_WRITE`, `FIGMA_LIBRARY_CONNECTED_ASSETS`, or `FIGMA_CAN_SCREENSHOT`.
 
 Also confirm the Figma file has:
 

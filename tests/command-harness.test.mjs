@@ -53,15 +53,15 @@ test("env parser accepts comments, export prefixes, quotes, and inline comments"
   assert.deepEqual(
     parseEnvFile(`
       # Figma live values
+      FIGMA_ACCESS_TOKEN="token"
       export FIGMA_FILE_KEY=Ta1RAMuisqWuBjOSc0nZfZ
       FIGMA_GENERATION_PAGE="Generation Workspace"
-      FIGMA_LIBRARY_CONNECTED_ASSETS=true # confirmed in Assets
       FIGMA_BOOTSTRAP_NODE_ID='2:2'
     `),
     {
+      FIGMA_ACCESS_TOKEN: "token",
       FIGMA_FILE_KEY: "Ta1RAMuisqWuBjOSc0nZfZ",
       FIGMA_GENERATION_PAGE: "Generation Workspace",
-      FIGMA_LIBRARY_CONNECTED_ASSETS: "true",
       FIGMA_BOOTSTRAP_NODE_ID: "2:2"
     }
   );
@@ -170,6 +170,35 @@ test("nesting command builds an ephemeral map from discovery fixture data", asyn
   );
 });
 
+test("nesting command accepts discovery command output files", async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "figma-nesting-command-output-"));
+  const discoveryPath = path.join(tempDir, "discovery-command-output.json");
+
+  try {
+    const discoverResult = await runCommand([
+      "discover",
+      "--fixture",
+      "fixtures/discovery/live-library.fixture.json"
+    ]);
+    await writeFile(discoveryPath, discoverResult.stdout);
+
+    const nestingResult = await runCommand([
+      "nesting",
+      "--discovery",
+      discoveryPath,
+      "--run-id",
+      "command-output-nesting"
+    ]);
+    const payload = JSON.parse(nestingResult.stdout);
+
+    assert.equal(nestingResult.exitCode, 0);
+    assert.equal(payload.details.nestingMap.kind, "figma-component-nesting-map");
+    assert.ok(payload.details.nestingMap.summary.componentCount > 0);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("bootstrap failure fixture returns a failing command result", async () => {
   const result = await runCommand([
     "bootstrap",
@@ -182,6 +211,62 @@ test("bootstrap failure fixture returns a failing command result", async () => {
   assert.equal(payload.ok, false);
   assert.equal(payload.details.ok, false);
   assert.ok(payload.details.summary.failed > 0);
+});
+
+test("bootstrap command reads screenshot node ids from env file", async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "figma-bootstrap-env-node-"));
+  const fixturePath = path.join(tempDir, "bootstrap.json");
+  const envPath = path.join(tempDir, ".env");
+
+  await writeFile(
+    fixturePath,
+    JSON.stringify({
+      fileKey: "bootstrap-env-file",
+      file: {
+        key: "bootstrap-env-file",
+        name: "Bootstrap Env Fixture",
+        document: { type: "DOCUMENT", children: [] },
+        libraries: [
+          {
+            libraryId: "new-engine-ui",
+            name: "New Engine Figma UI Library",
+            connectedAsAssets: true,
+            status: "connected",
+            source: "fixture"
+          }
+        ]
+      },
+      canWrite: true,
+      canScreenshot: true,
+      components: [{ key: "button-primary-key", name: "Button / Primary" }],
+      componentSets: [],
+      variables: {
+        meta: {
+          variables: { "VariableID:button-bg": { name: "component/button/background/primary" } },
+          variableCollections: {}
+        }
+      },
+      images: { "2:2": "https://example.com/bootstrap-probe.png" }
+    })
+  );
+  await writeFile(envPath, "FIGMA_BOOTSTRAP_NODE_ID=2:2\n");
+
+  try {
+    const result = await runCommand([
+      "bootstrap",
+      "--fixture",
+      fixturePath,
+      "--env-file",
+      envPath
+    ]);
+    const payload = JSON.parse(result.stdout);
+    const checks = Object.fromEntries(payload.details.checks.map((check) => [check.name, check]));
+
+    assert.equal(result.exitCode, 0);
+    assert.deepEqual(checks.screenshots.details.exportedNodeIds, ["2:2"]);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
 });
 
 test("discover command writes a disposable run cache artifact when run id is provided", async () => {

@@ -42,7 +42,7 @@ Expected Assets connection:
 
 ## 3. Prepare Environment Values
 
-Live Figma runs should provide a file key, target workspace, expected library name, and capability confirmations from the selected adapter. The CLI loads `.env` from the repository root automatically.
+Live Figma runs require a token and file key. The CLI loads `.env` from the repository root automatically.
 
 ```bash
 cp .env.example .env
@@ -51,15 +51,19 @@ cp .env.example .env
 Then edit `.env`:
 
 ```dotenv
-FIGMA_ACCESS_TOKEN="<token-if-required-by-the-selected-figma-adapter>"
+FIGMA_ACCESS_TOKEN="<figma-api-token>"
 FIGMA_FILE_KEY="<customer-file-key>"
+```
+
+Optional hints:
+
+```dotenv
 FIGMA_GENERATION_PAGE="Generation Workspace"
 FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
-FIGMA_LIBRARY_CONNECTED_ASSETS=true
-FIGMA_CAN_WRITE=true
-FIGMA_CAN_SCREENSHOT=true
 FIGMA_BOOTSTRAP_NODE_ID=2:2
 ```
+
+Live bootstrap assumes write access, connected Assets, and screenshot export are available unless explicitly set to `false` with `FIGMA_CAN_WRITE`, `FIGMA_LIBRARY_CONNECTED_ASSETS`, or `FIGMA_CAN_SCREENSHOT`.
 
 The `.env` file is ignored by git. Shell environment values override `.env` values when both are present. Use `--env-file <path>` to load a different file, or `--env-file none` to disable `.env` loading.
 

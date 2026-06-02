@@ -72,6 +72,66 @@ test("bootstrap check reports missing fixture capabilities with actionable messa
   }
 });
 
+test("bootstrap check accepts live operator-confirmed assets when optional REST endpoints are unavailable", async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "figma-bootstrap-live-fallback-"));
+  const variablesError = new Error("Figma API request failed: 403");
+  variablesError.name = "FigmaAccessError";
+
+  try {
+    const result = await runBootstrapCheck({
+      reportOutputPath: path.join(tempDir, "design-run-report.json"),
+      screenshotNodeIds: ["2:2"],
+      figmaAccess: {
+        mode: "live",
+        async health() {
+          return {
+            mode: "live",
+            fileKey: "live-file",
+            generationPage: "Generation Workspace",
+            libraryName: "New Design System vol. 2",
+            connectedAsAssets: true,
+            canRead: true,
+            canWrite: true,
+            canScreenshot: true
+          };
+        },
+        async getFile() {
+          return {
+            key: "live-file",
+            name: "Generation Workspace",
+            document: {
+              type: "DOCUMENT",
+              children: [{ type: "CANVAS", name: "Generation Workspace", children: [] }]
+            }
+          };
+        },
+        async getLocalComponents() {
+          return [];
+        },
+        async getLocalComponentSets() {
+          return [];
+        },
+        async getVariables() {
+          throw variablesError;
+        },
+        async exportImages(nodeIds) {
+          return { images: Object.fromEntries(nodeIds.map((nodeId) => [nodeId, "https://example.com/export.png"])) };
+        }
+      }
+    });
+    const checks = Object.fromEntries(result.checks.map((check) => [check.name, check]));
+
+    assert.equal(result.ok, true);
+    assert.equal(result.summary.passed, 6);
+    assert.equal(checks.libraryAssets.details.library.source, "operator_confirmation");
+    assert.match(checks.libraryAssets.details.assetDiscoveryWarning, /connected-Assets confirmation/);
+    assert.equal(checks.variables.details.endpointAvailable, false);
+    assert.match(checks.variables.details.errorMessage, /403/);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("bootstrap check reports access failures before dependent checks", async () => {
   const result = await runBootstrapCheck({
     fixturePath: path.join(repoRoot, "fixtures/bootstrap/missing.json")

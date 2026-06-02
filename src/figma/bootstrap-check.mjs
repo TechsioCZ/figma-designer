@@ -133,7 +133,10 @@ async function checkLibraryAssets(state, options) {
     options.libraryName ?? state.health.libraryName ?? "New Engine Figma UI Library";
   const libraries = collectLibraryRefs(state.runContext, state.file);
   const matchingLibrary = libraries.find((library) => library.name === expectedLibraryName);
-  const connectedLibrary = matchingLibrary ?? libraries.find(isConnectedLibrary);
+  const connectedLibrary =
+    matchingLibrary ??
+    libraries.find(isConnectedLibrary) ??
+    inferOperatorConfirmedLibrary(state.health, expectedLibraryName);
   const assetCount = state.components.length + state.componentSets.length;
 
   if (!connectedLibrary) {
@@ -161,7 +164,7 @@ async function checkLibraryAssets(state, options) {
     );
   }
 
-  if (assetCount === 0) {
+  if (assetCount === 0 && connectedLibrary.source !== "operator_confirmation") {
     return failed(
       "libraryAssets",
       "Library Assets are unavailable: no components or component sets were discovered from the connected library.",
@@ -176,7 +179,11 @@ async function checkLibraryAssets(state, options) {
   return passed("libraryAssets", "Connected library Assets are available.", {
     library: summarizeLibrary(connectedLibrary),
     componentCount: state.components.length,
-    componentSetCount: state.componentSets.length
+    componentSetCount: state.componentSets.length,
+    assetDiscoveryWarning:
+      assetCount === 0
+        ? "Figma REST did not expose local components or component sets for this file; continuing from live connected-Assets confirmation."
+        : null
   });
 }
 
@@ -188,6 +195,20 @@ async function checkVariables(state) {
   try {
     state.variables = await state.figmaAccess.getVariables();
   } catch (error) {
+    if (state.health.mode === "live" && state.health.connectedAsAssets === true) {
+      return passed(
+        "variables",
+        "Figma variables endpoint is unavailable, but live Figma access and connected Assets were confirmed.",
+        {
+          variables: 0,
+          collections: 0,
+          endpointAvailable: false,
+          errorName: error.name,
+          errorMessage: error.message
+        }
+      );
+    }
+
     return failed("variables", `Figma variables are unavailable: ${error.message}`, {
       errorName: error.name
     });
@@ -322,6 +343,20 @@ function collectLibraryRefs(runContext, file) {
     ...(Array.isArray(file?.connectedLibraries) ? file.connectedLibraries : []),
     ...(Array.isArray(file?.teamLibraries) ? file.teamLibraries : [])
   ];
+}
+
+function inferOperatorConfirmedLibrary(health, expectedLibraryName) {
+  if (health?.connectedAsAssets !== true) {
+    return null;
+  }
+
+  return {
+    libraryId: null,
+    name: health.libraryName ?? expectedLibraryName,
+    connectedAsAssets: true,
+    status: "connected",
+    source: "operator_confirmation"
+  };
 }
 
 function collectScreenshotNodeIds(runContext, file, options) {

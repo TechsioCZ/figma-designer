@@ -258,3 +258,65 @@ test("normalizes live Figma REST-like payload wrappers and marks live_figma sour
     }
   ]);
 });
+
+test("live discovery records optional endpoint failures without aborting", async () => {
+  const forbidden = new Error("Figma API request failed: 403");
+  forbidden.name = "FigmaAccessError";
+  const figmaAccess = {
+    mode: "live",
+    async health() {
+      return {
+        mode: "live",
+        fileKey: "LiveFileKey",
+        libraryName: "New Design System vol. 2",
+        connectedAsAssets: true,
+        canRead: true
+      };
+    },
+    async getFile() {
+      return {
+        key: "LiveFileKey",
+        name: "Live Customer File",
+        document: { id: "0:0", name: "Document", type: "DOCUMENT", children: [] }
+      };
+    },
+    async getLocalComponents() {
+      return {
+        meta: {
+          components: [
+            {
+              key: "button-key",
+              file_key: "LiveFileKey",
+              node_id: "2:2",
+              name: "Button"
+            }
+          ]
+        }
+      };
+    },
+    async getLocalComponentSets() {
+      return [];
+    },
+    async getLocalStyles() {
+      throw forbidden;
+    },
+    async getVariables() {
+      throw forbidden;
+    }
+  };
+
+  const discovery = await discoverLibrary({ figmaAccess, runId: "live-endpoint-fallback-test" });
+
+  assert.equal(discovery.source, "live_figma");
+  assert.equal(discovery.components.length, 1);
+  assert.deepEqual(discovery.styles, []);
+  assert.deepEqual(discovery.variables.references, []);
+  assert.deepEqual(
+    discovery.endpointWarnings.map((warning) => warning.endpoint).sort(),
+    ["getLocalStyles", "getVariables"]
+  );
+  assert.deepEqual(
+    discovery.runContextPatch.discovery.endpointWarnings.map((warning) => warning.endpoint).sort(),
+    ["getLocalStyles", "getVariables"]
+  );
+});

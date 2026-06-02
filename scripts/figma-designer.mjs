@@ -202,7 +202,7 @@ async function runBootstrap({ commandName, options, io }) {
     runContext: context?.data,
     mode: fixture ? "fixture" : undefined,
     reportOutputPath: options.report_output,
-    screenshotNodeIds: options.screenshot_node_ids?.split(",").filter(Boolean)
+    screenshotNodeIds: parseListOption(options.screenshot_node_ids ?? env.FIGMA_BOOTSTRAP_NODE_ID)
   });
 
   return commandPayload(commandName, options, {
@@ -210,6 +210,17 @@ async function runBootstrap({ commandName, options, io }) {
     runContext: summarizeJsonSource(context),
     source: summarizeJsonSource(fixture)
   });
+}
+
+function parseListOption(value) {
+  if (!value) {
+    return undefined;
+  }
+
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 async function runDiscover({ commandName, options, io }) {
@@ -242,7 +253,8 @@ async function runDiscover({ commandName, options, io }) {
 async function runNesting({ commandName, options }) {
   const discoveryInput = await readOptionalJson(options.discovery);
   const fixture = await readOptionalJson(options.fixture);
-  const discovery = discoveryInput?.data ?? await discoverForCommandFixture(fixture, options);
+  const discovery =
+    unwrapDiscoveryPayload(discoveryInput?.data) ?? await discoverForCommandFixture(fixture, options);
   const nestingMap = buildComponentNestingMap(discovery, {
     runId: options.run_id,
     now: options.generated_at
@@ -277,6 +289,26 @@ async function runValidate({ commandName, options }) {
     familyResults: validatorResult.familyResults,
     source: summarizeJsonSource(fixture ?? report)
   });
+}
+
+function unwrapDiscoveryPayload(value) {
+  if (!value) {
+    return null;
+  }
+
+  if (value.kind === "figma-library-discovery") {
+    return value;
+  }
+
+  if (value.details?.discovery?.kind === "figma-library-discovery") {
+    return value.details.discovery;
+  }
+
+  if (value.discovery?.kind === "figma-library-discovery") {
+    return value.discovery;
+  }
+
+  return value;
 }
 
 function validationContextFromInput(input) {

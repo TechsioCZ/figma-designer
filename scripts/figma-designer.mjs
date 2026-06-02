@@ -194,6 +194,7 @@ async function runBootstrap({ commandName, options }) {
   const context = await readOptionalJson(options.run_context);
   const fixture = await readOptionalJson(options.fixture);
   const result = await runBootstrapCheck({
+    env: process.env,
     fixture: fixture?.data,
     fixturePath: options.fixture,
     runContext: context?.data,

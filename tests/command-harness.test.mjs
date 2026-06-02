@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { commands, parseArgs, runCommand } from "../scripts/figma-designer.mjs";
+import { commands, parseArgs, parseEnvFile, runCommand } from "../scripts/figma-designer.mjs";
 
 test("help lists the stable command surface", async () => {
   const result = await runCommand(["--help"]);
@@ -47,6 +47,24 @@ test("argument parser accepts dashed options and equals options", () => {
     fixture: "fixtures/discovery.json",
     run_context: "fixtures/run-context.json"
   });
+});
+
+test("env parser accepts comments, export prefixes, quotes, and inline comments", () => {
+  assert.deepEqual(
+    parseEnvFile(`
+      # Figma live values
+      export FIGMA_FILE_KEY=Ta1RAMuisqWuBjOSc0nZfZ
+      FIGMA_GENERATION_PAGE="Generation Workspace"
+      FIGMA_LIBRARY_CONNECTED_ASSETS=true # confirmed in Assets
+      FIGMA_BOOTSTRAP_NODE_ID='2:2'
+    `),
+    {
+      FIGMA_FILE_KEY: "Ta1RAMuisqWuBjOSc0nZfZ",
+      FIGMA_GENERATION_PAGE: "Generation Workspace",
+      FIGMA_LIBRARY_CONNECTED_ASSETS: "true",
+      FIGMA_BOOTSTRAP_NODE_ID: "2:2"
+    }
+  );
 });
 
 test("discover command dispatch reads fixture JSON deterministically", async () => {

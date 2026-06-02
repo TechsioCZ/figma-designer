@@ -1,5 +1,8 @@
 node_modules/
 .DS_Store
+.env
+.env.*
+!.env.example
 
 # Per-run disposable artifacts. Keep fixture placeholders committed.
 runs/*

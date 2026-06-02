@@ -185,16 +185,18 @@ export function parseArgs(args) {
 function defaultIo() {
   return {
     cwd: repoRoot,
+    env: process.env,
     stdout: (value) => process.stdout.write(value),
     stderr: (value) => process.stderr.write(value)
   };
 }
 
-async function runBootstrap({ commandName, options }) {
+async function runBootstrap({ commandName, options, io }) {
   const context = await readOptionalJson(options.run_context);
   const fixture = await readOptionalJson(options.fixture);
+  const env = await loadCommandEnv(options, io);
   const result = await runBootstrapCheck({
-    env: process.env,
+    env,
     fixture: fixture?.data,
     fixturePath: options.fixture,
     runContext: context?.data,
@@ -210,12 +212,14 @@ async function runBootstrap({ commandName, options }) {
   });
 }
 
-async function runDiscover({ commandName, options }) {
+async function runDiscover({ commandName, options, io }) {
   const fixture = await readOptionalJson(options.fixture);
+  const env = await loadCommandEnv(options, io);
   const figmaAccess = fixture
     ? createFigmaAccess({ mode: "fixture", fixture: fixture.data })
     : undefined;
   const discovery = await discoverLibrary({
+    env,
     figmaAccess,
     runId: options.run_id,
     cachePath: options.cache_path,
@@ -566,6 +570,82 @@ function stableOptions(options) {
     .sort(([left], [right]) => left.localeCompare(right));
 
   return Object.fromEntries(entries);
+}
+
+async function loadCommandEnv(options, io = defaultIo()) {
+  const baseEnv = io.env ?? process.env;
+  const envFileOption = options.env_file ?? ".env";
+
+  if (envFileOption === "none" || envFileOption === "false") {
+    return { ...baseEnv };
+  }
+
+  const envPath = resolveRepoPath(envFileOption);
+
+  try {
+    await access(envPath);
+  } catch {
+    if (options.env_file) {
+      throw new Error(`Environment file not found: ${envFileOption}`);
+    }
+    return { ...baseEnv };
+  }
+
+  const parsed = parseEnvFile(await readFile(envPath, "utf8"));
+  return {
+    ...parsed,
+    ...baseEnv
+  };
+}
+
+export function parseEnvFile(text) {
+  const env = {};
+
+  for (const rawLine of String(text).split(/\r?\n/)) {
+    const line = rawLine.trim();
+
+    if (!line || line.startsWith("#")) {
+      continue;
+    }
+
+    const normalized = line.startsWith("export ") ? line.slice("export ".length).trim() : line;
+    const equalsIndex = normalized.indexOf("=");
+
+    if (equalsIndex <= 0) {
+      continue;
+    }
+
+    const key = normalized.slice(0, equalsIndex).trim();
+    const value = normalized.slice(equalsIndex + 1).trim();
+
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) {
+      continue;
+    }
+
+    env[key] = parseEnvValue(value);
+  }
+
+  return env;
+}
+
+function parseEnvValue(value) {
+  if (
+    (value.startsWith("\"") && value.endsWith("\"")) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    const unquoted = value.slice(1, -1);
+    return value.startsWith("\"")
+      ? unquoted
+          .replaceAll("\\n", "\n")
+          .replaceAll("\\r", "\r")
+          .replaceAll("\\t", "\t")
+          .replaceAll('\\"', '"')
+          .replaceAll("\\\\", "\\")
+      : unquoted;
+  }
+
+  const commentIndex = value.search(/\s#/);
+  return (commentIndex >= 0 ? value.slice(0, commentIndex) : value).trim();
 }
 
 function splitCsv(value) {

@@ -42,17 +42,26 @@ Expected Assets connection:
 
 ## 3. Prepare Environment Values
 
-Live Figma runs should provide a file key, target workspace, expected library name, and capability confirmations from the selected adapter.
+Live Figma runs should provide a file key, target workspace, expected library name, and capability confirmations from the selected adapter. The CLI loads `.env` from the repository root automatically.
 
 ```bash
-export FIGMA_FILE_KEY="<customer-file-key>"
-export FIGMA_GENERATION_PAGE="Generation Workspace"
-export FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
-export FIGMA_ACCESS_TOKEN="<token-if-required-by-the-selected-figma-adapter>"
-export FIGMA_LIBRARY_CONNECTED_ASSETS="true"
-export FIGMA_CAN_WRITE="true"
-export FIGMA_CAN_SCREENSHOT="true"
+cp .env.example .env
 ```
+
+Then edit `.env`:
+
+```dotenv
+FIGMA_ACCESS_TOKEN="<token-if-required-by-the-selected-figma-adapter>"
+FIGMA_FILE_KEY="<customer-file-key>"
+FIGMA_GENERATION_PAGE="Generation Workspace"
+FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
+FIGMA_LIBRARY_CONNECTED_ASSETS=true
+FIGMA_CAN_WRITE=true
+FIGMA_CAN_SCREENSHOT=true
+FIGMA_BOOTSTRAP_NODE_ID=2:2
+```
+
+The `.env` file is ignored by git. Shell environment values override `.env` values when both are present. Use `--env-file <path>` to load a different file, or `--env-file none` to disable `.env` loading.
 
 Keep run-specific cache data ephemeral. A run cache may speed up one discovery, nesting, validation, or report pass, but it must not become a duplicated source of truth for the Design System.
 

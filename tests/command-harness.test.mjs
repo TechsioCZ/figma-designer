@@ -269,6 +269,28 @@ test("bootstrap command reads screenshot node ids from env file", async () => {
   }
 });
 
+test("command output creates parent directories automatically", async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "figma-command-output-dir-"));
+  const outputPath = path.join(tempDir, "nested", "bootstrap.json");
+
+  try {
+    const result = await runCommand([
+      "bootstrap",
+      "--fixture",
+      "fixtures/bootstrap/success.json",
+      "--output",
+      outputPath
+    ]);
+    const output = JSON.parse(await readFile(outputPath, "utf8"));
+
+    assert.equal(result.exitCode, 0);
+    assert.equal(output.command, "bootstrap");
+    assert.equal(output.ok, true);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("discover command writes a disposable run cache artifact when run id is provided", async () => {
   const tempDir = await mkdtemp(path.join(os.tmpdir(), "figma-discovery-cache-"));
 

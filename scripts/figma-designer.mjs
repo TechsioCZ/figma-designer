@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { access, readdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -119,7 +119,7 @@ export async function runCommand(argv = [], io = defaultIo()) {
     const output = formatPayload(payload, options);
 
     if (options.output) {
-      await writeFile(resolveRepoPath(options.output), output);
+      await writeOutputFile(options.output, output);
     }
 
     return { exitCode: payload.ok === false ? 1 : 0, stdout: output, stderr: "" };
@@ -132,6 +132,12 @@ export async function runCommand(argv = [], io = defaultIo()) {
 
     return { exitCode: 1, stdout: `${JSON.stringify(payload, null, 2)}\n`, stderr: "" };
   }
+}
+
+async function writeOutputFile(outputPath, output) {
+  const resolvedPath = resolveRepoPath(outputPath);
+  await mkdir(path.dirname(resolvedPath), { recursive: true });
+  await writeFile(resolvedPath, output);
 }
 
 export function parseArgs(args) {

@@ -28,8 +28,8 @@ test("plans approved validation and gap actions from report evidence", () => {
   assert.equal(plan.strictComposition.noUnapprovedProvisionalExtensions, true);
   assert.equal(plan.strictComposition.provisionalExtensionsCreated, false);
   assert.equal(plan.strictComposition.liveWritePerformed, false);
-  assert.equal(plan.summary.openValidationIssueCount, 1);
-  assert.equal(plan.summary.approvedActionCount, 2);
+  assert.equal(plan.summary.openValidationIssueCount, 2);
+  assert.equal(plan.summary.approvedActionCount, 3);
   assert.equal(plan.summary.blockedActionCount, 0);
   assert.equal(plan.summary.screenshotReferenceCount, 1);
   assert.equal(plan.summary.gapReferenceCount, 1);
@@ -44,7 +44,15 @@ test("plans approved validation and gap actions from report evidence", () => {
   assert.equal(contrastAction.liveWrite, false);
   assert.deepEqual(contrastAction.evidence.screenshotIds, ["shot-login-light"]);
   assert.ok(contrastAction.evidence.nodes.some((node) => node.nodeId === "12:63"));
+  assert.match(contrastAction.instruction, /WCAG 2\.2 SC 1\.4\.6/);
   assert.match(contrastAction.instruction, /Use existing library assets/);
+
+  const apcaAction = plan.actions.find((action) =>
+    action.evidence.validationIssueIds.includes("val-contrast-002")
+  );
+  assert.ok(apcaAction);
+  assert.equal(apcaAction.type, "bind_existing_variable");
+  assert.match(apcaAction.instruction, /APCA Readability Criterion Gold/);
 
   const gapAction = plan.actions.find((action) => action.evidence.gapIds.includes("gap-auth-card"));
   assert.ok(gapAction);
@@ -52,10 +60,15 @@ test("plans approved validation and gap actions from report evidence", () => {
   assert.equal(gapAction.status, "approved");
   assert.deepEqual(gapAction.evidence.provisionalExtensionIds, ["ext-auth-card"]);
 
-  assert.equal(plan.reportPatch.iterationNotes.length, 2);
+  assert.equal(plan.reportPatch.iterationNotes.length, 3);
   assert.ok(
     plan.reportPatch.iterationNotes.some((note) =>
       note.relatedValidationIssueIds?.includes("val-contrast-001")
+    )
+  );
+  assert.ok(
+    plan.reportPatch.iterationNotes.some((note) =>
+      note.relatedValidationIssueIds?.includes("val-contrast-002")
     )
   );
   assert.ok(

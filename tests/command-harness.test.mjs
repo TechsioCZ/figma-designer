@@ -122,7 +122,7 @@ test("validate command reflects failed report validation state", async () => {
 
   assert.equal(result.exitCode, 0);
   assert.equal(payload.details.status, "failed");
-  assert.equal(payload.details.issues.length, 1);
+  assert.equal(payload.details.issues.length, 2);
 });
 
 test("report command default payload follows the report contract", async () => {

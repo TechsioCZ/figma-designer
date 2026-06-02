@@ -13,10 +13,17 @@
     "figma:report": "node scripts/figma-designer.mjs report",
     "figma:iterate": "node scripts/figma-designer.mjs iterate",
     "figma:validate-schemas": "node scripts/figma-designer.mjs validate-schemas",
+    "figma:update-env": "node scripts/update-figma-env.mjs",
+    "figma:doctor": "node scripts/figma-doctor.mjs",
+    "setup:figma-codex": "node scripts/setup-figma-codex.mjs",
+    "setup:local": "npm run setup:figma-codex && npm run figma:doctor",
     "test": "node --test tests/*.test.mjs",
     "validate:schemas": "node scripts/figma-designer.mjs validate-schemas"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "apca-w3": "0.1.9"
   }
 }

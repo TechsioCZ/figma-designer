@@ -1,0 +1,27 @@
+suppress_unstable_features_warning = true
+
+[features]
+apps = true
+
+[mcp_servers.figma-desktop]
+url = "http://127.0.0.1:3845/mcp"
+
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+
+[mcp_servers.figma_console]
+command = "zsh"
+args = ["-lc", "cd /Users/satan/side/experiments/figma-designer && set -a && [ -f .env ] && source .env; set +a; exec npx -y figma-console-mcp@latest"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.figma_console.env]
+ENABLE_MCP_APPS = "true"
+
+[marketplaces.figma-designer]
+last_updated = "2026-06-02T00:00:00Z"
+source_type = "local"
+source = "/Users/satan/side/experiments/figma-designer"
+
+[plugins."figma@figma-designer"]
+enabled = true

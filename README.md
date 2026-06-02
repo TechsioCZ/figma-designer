@@ -26,14 +26,26 @@ Do not treat local files as a permanent Design System manifest. The connected Fi
 git clone <template-repo-url> figma-designer
 cd figma-designer
 npm install
-npm run figma -- --help
+npm run setup:local
 ```
 
 For a customer project, keep customer-specific prompts, reports, screenshots, and run caches outside the shared Design System source of truth. Use this repo to run the workflow and store run artifacts under `reports/` only when they are useful to keep.
 
+`npm run setup:local` installs the repo-local Codex/Figma MCP configuration, creates `.env` from `.env.example` when missing, and runs deterministic fixture checks. It does not need a live Figma file.
+
+## Starter Figma File
+
+The default starter path is MCP-created, not manual `.fig` import. Figma file IDs are account and workspace specific, so plain npm cannot create a cloud file by importing a committed `.fig`; Codex must use Figma MCP after authentication.
+
+Use one of these starter paths:
+
+- Preferred: after `npm run setup:local`, restart Codex and ask it to use `figma-first-run`. Codex creates a new Figma Design file, seeds `Generation Workspace`, updates `.env`, and runs local checks.
+- Manual fallback: duplicate or import a starter `.fig` in Figma, then paste the new file key into `.env`.
+- Existing project: open the customer file, connect the library in Assets, and paste that file key into `.env`.
+
 ## Environment
 
-The command harness supports fixture-backed local runs and live Figma reads. For live runs, create a `.env` file in the repository root:
+The command harness supports fixture-backed local runs and live Figma reads. `npm run setup:local` creates `.env` when missing. For live runs, fill in:
 
 ```dotenv
 FIGMA_ACCESS_TOKEN="<figma-api-token>"

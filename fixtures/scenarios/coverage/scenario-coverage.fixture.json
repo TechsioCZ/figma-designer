@@ -214,15 +214,15 @@
         "resolvedType": "COLOR",
         "valuesByMode": {
           "ModeId:light": {
-            "r": 0.1,
-            "g": 0.28,
-            "b": 0.8,
+            "r": 0.0902,
+            "g": 0.2431,
+            "b": 0.6588,
             "a": 1
           },
           "ModeId:dark": {
-            "r": 0.45,
-            "g": 0.62,
-            "b": 1,
+            "r": 0.8588,
+            "g": 0.9176,
+            "b": 0.9961,
             "a": 1
           }
         },
@@ -314,7 +314,6 @@
         "name": "Primary button label light",
         "foreground": "#FFFFFF",
         "background": "VariableID:component-button-bg-primary",
-        "minRatio": 4.5,
         "modeId": "ModeId:light",
         "modeName": "Light",
         "node": {
@@ -327,7 +326,6 @@
         "name": "Primary button label dark",
         "foreground": "#000000",
         "background": "VariableID:component-button-bg-primary",
-        "minRatio": 4.5,
         "modeId": "ModeId:dark",
         "modeName": "Dark",
         "node": {

@@ -368,11 +368,14 @@ function provisionalDecisionForIssue(issue, evidence, indexes) {
 
 function instructionForValidationIssue(issue, type, evidence) {
   const recommendation = issue.recommendation ? `${issue.recommendation} ` : "";
+  const contrastEvidence = issue.category === "contrast"
+    ? `${issue.expected ? `Expected: ${issue.expected} ` : ""}${issue.actual ? `Actual: ${issue.actual} ` : ""}`
+    : "";
   const nodeText = evidence.nodes.length > 0
     ? `Target ${evidence.nodes.map((node) => `${node.name} (${node.nodeId})`).join(", ")}.`
     : "Target the affected Figma nodes recorded by validation.";
 
-  return `${recommendation}${nodeText} Use existing library assets, supported component properties, approved slots, styles, variables, and patterns only.`;
+  return `${recommendation}${contrastEvidence}${nodeText} Use existing library assets, supported component properties, approved slots, styles, variables, and patterns only.`;
 }
 
 function iterationNoteForAction(actionEntry, { iteration, generatedAt }) {

@@ -86,7 +86,7 @@ test("rejects variables that do not resolve in every collection mode", () => {
   assert.equal(issue.node.nodeId, node.nodeId);
 });
 
-test("rejects contrast expectations below the configured threshold", () => {
+test("rejects contrast expectations below hard WCAG AAA and APCA Gold thresholds", () => {
   const result = validateVariablesThemesContrast({
     contrastChecks: [
       {
@@ -102,12 +102,15 @@ test("rejects contrast expectations below the configured threshold", () => {
 
   assert.equal(result.status, "failed");
   const issue = result.issues.find(
-    (candidate) => candidate.code === "CONTRAST_EXPECTATION_FAILED"
+    (candidate) => candidate.code === "WCAG22_AAA_CONTRAST_FAILED"
   );
   assert.ok(issue);
   assert.equal(issue.category, "contrast");
   assert.equal(issue.severity, "error");
   assert.equal(issue.node.nodeId, node.nodeId);
+  assert.ok(
+    result.issues.some((candidate) => candidate.code === "APCA_GOLD_CONTRAST_FAILED")
+  );
 });
 
 test("passes component variable chains, mode coverage, and contrast expectations", () => {
@@ -126,7 +129,6 @@ test("passes component variable chains, mode coverage, and contrast expectations
         name: "Primary button label",
         foreground: "VariableID:component-button-text-primary",
         background: "VariableID:component-button-bg-primary",
-        minRatio: 4.5,
         modeId: "ModeId:light",
         modeName: "Light",
         node
@@ -148,8 +150,8 @@ function primitiveBlue() {
     collectionId: "VariableCollectionId:colors",
     resolvedType: "color",
     valuesByMode: {
-      "ModeId:light": { r: 0.1, g: 0.28, b: 0.8, a: 1 },
-      "ModeId:dark": { r: 0.45, g: 0.62, b: 1, a: 1 }
+      "ModeId:light": { r: 0.0902, g: 0.2431, b: 0.6588, a: 1 },
+      "ModeId:dark": { r: 0.8588, g: 0.9176, b: 0.9961, a: 1 }
     }
   };
 }

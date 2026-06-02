@@ -127,7 +127,7 @@ npm run figma:validate -- \
   --run-id run-local-login
 ```
 
-Validation covers detached components, non-library instances, invalid properties or slots, unsafe nested content, raw final values, broken variable chains, mode and theme coverage, contrast, auto-layout hygiene, resizing behavior, spacing rules, prototype dead ends, screenshot issues, and provisional extension reporting.
+Validation covers detached components, non-library instances, invalid properties or slots, unsafe nested content, raw final values, broken variable chains, mode and theme coverage, WCAG 2.2 AAA contrast, APCA Gold contrast, auto-layout hygiene, resizing behavior, spacing rules, prototype dead ends, screenshot issues, and provisional extension reporting.
 
 Blocking validation failures must be fixed, waived by explicit operator approval, or left as open issues in the Design Run Report.
 

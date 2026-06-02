@@ -41,8 +41,8 @@ test("builds a deterministic report from generated output, validation, screensho
         severity: "error",
         message: "Title contrast is below the target threshold.",
         node: title,
-        expected: "WCAG AA title contrast",
-        actual: "3.2:1",
+        expected: "WCAG 2.2 SC 1.4.6 Contrast (Enhanced) AAA ratio >= 7.00.",
+        actual: "WCAG ratio 3.20.",
         recommendation: "Use an approved stronger semantic text variable."
       }
     ]

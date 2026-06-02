@@ -66,8 +66,8 @@ test("report modules preserve screenshot, usage, validation, gap, improvement, a
             status: "open",
             message: "Primary checkout action label contrast is below the target threshold.",
             node: nodes.button,
-            expected: "WCAG AA contrast for action labels.",
-            actual: "3.1:1",
+            expected: "WCAG 2.2 SC 1.4.6 Contrast (Enhanced) AAA ratio >= 7.00 and APCA Gold Lc >= 90.0.",
+            actual: "WCAG ratio 3.10; APCA Lc 58.0.",
             recommendation: "Rebind the action label to the approved strong text variable."
           }
         ]

@@ -72,8 +72,8 @@ test("serializes failing family issues and summarizes blocking severities", asyn
                     name: "Title",
                     type: "TEXT"
                   },
-                  expected: "WCAG AA contrast for title text",
-                  actual: "3.1:1",
+                  expected: "WCAG 2.2 SC 1.4.6 Contrast (Enhanced) AAA ratio >= 7.00.",
+                  actual: "WCAG ratio 3.10.",
                   recommendation: "Use an approved stronger semantic text variable."
                 },
                 {
@@ -108,8 +108,8 @@ test("serializes failing family issues and summarizes blocking severities", asyn
     contrastIssue.node.url,
     "https://www.figma.com/file/ValidatorFileKey/Validator-Fixture?node-id=12-63"
   );
-  assert.equal(contrastIssue.expected, "WCAG AA contrast for title text");
-  assert.equal(contrastIssue.actual, "3.1:1");
+  assert.equal(contrastIssue.expected, "WCAG 2.2 SC 1.4.6 Contrast (Enhanced) AAA ratio >= 7.00.");
+  assert.equal(contrastIssue.actual, "WCAG ratio 3.10.");
   assert.equal(contrastIssue.recommendation, "Use an approved stronger semantic text variable.");
 
   const themeIssue = result.validation.issues[1];

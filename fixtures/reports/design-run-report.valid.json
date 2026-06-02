@@ -13,7 +13,7 @@
     "screenCount": 1,
     "componentUsageCount": 2,
     "variableUsageCount": 3,
-    "validationIssueCount": 1,
+    "validationIssueCount": 2,
     "designSystemGapCount": 1,
     "provisionalExtensionCount": 1,
     "screenshotCount": 1
@@ -30,7 +30,7 @@
       "status": "needs_iteration",
       "briefReference": "Create a login screen using only library components.",
       "screenshotIds": ["shot-login-light"],
-      "validationIssueIds": ["val-contrast-001"]
+      "validationIssueIds": ["val-contrast-001", "val-contrast-002"]
     }
   ],
   "componentsUsed": [
@@ -133,27 +133,44 @@
     "status": "failed",
     "summary": {
       "critical": 0,
-      "error": 1,
+      "error": 2,
       "warning": 0,
       "info": 0
     },
     "issues": [
       {
         "id": "val-contrast-001",
-        "code": "CONTRAST_TEXT_SECONDARY",
+        "code": "WCAG22_AAA_CONTRAST_FAILED",
         "category": "contrast",
         "severity": "error",
         "status": "open",
-        "message": "Secondary help text does not meet the target contrast threshold in Light mode.",
+        "message": "Secondary help text does not meet WCAG 2.2 AAA contrast in Light mode.",
         "node": {
           "nodeId": "12:63",
           "name": "Password help text",
           "type": "TEXT",
           "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-63"
         },
-        "expected": "WCAG AA contrast for body text",
-        "actual": "Contrast check failed for the selected semantic text variable.",
-        "recommendation": "Use an existing stronger semantic text variable or add a Design System gap if no suitable token exists."
+        "expected": "WCAG 2.2 SC 1.4.6 Contrast (Enhanced) AAA ratio >= 7.00.",
+        "actual": "WCAG ratio 4.97; foreground=#667085; background=#ffffff.",
+        "recommendation": "Use an existing stronger semantic text/surface variable pair or add an accessibility Design System gap if no suitable token exists."
+      },
+      {
+        "id": "val-contrast-002",
+        "code": "APCA_GOLD_CONTRAST_FAILED",
+        "category": "contrast",
+        "severity": "error",
+        "status": "open",
+        "message": "Secondary help text does not meet APCA Gold contrast in Light mode.",
+        "node": {
+          "nodeId": "12:63",
+          "name": "Password help text",
+          "type": "TEXT",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-63"
+        },
+        "expected": "APCA Readability Criterion Gold Lc >= 90.0 for body_text.",
+        "actual": "APCA Lc 86.7; foreground=#667085; background=#ffffff.",
+        "recommendation": "Use an existing stronger semantic text/surface variable pair that passes APCA Gold or add an accessibility Design System gap if no suitable token exists."
       }
     ]
   },
@@ -264,8 +281,8 @@
       "createdAt": "2026-06-02T10:16:00.000Z",
       "authorRole": "codex",
       "category": "validation",
-      "note": "Resolve the secondary text contrast issue before marking the run passed.",
-      "relatedValidationIssueIds": ["val-contrast-001"],
+      "note": "Resolve the secondary text contrast issues before marking the run passed.",
+      "relatedValidationIssueIds": ["val-contrast-001", "val-contrast-002"],
       "nextAction": "Switch the help text to an approved stronger semantic text variable and recapture the screenshot."
     },
     {

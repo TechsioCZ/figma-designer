@@ -12,7 +12,7 @@ For the full brief-to-iteration sequence, use [Full Run](./full-run.md) after th
 git clone <template-repo-url> figma-designer
 cd figma-designer
 npm install
-npm run figma -- --help
+npm run setup:local
 ```
 
 Prerequisites:
@@ -25,7 +25,15 @@ Prerequisites:
 
 ## 2. Prepare The Figma File
 
-In Figma:
+Use one of these paths:
+
+- Seamless first run: after Figma MCP is authenticated, ask Codex to use `figma-first-run`. It creates the Design file, seeds `Generation Workspace`, updates `.env`, and runs checks.
+- Existing customer file: open it in Figma and use its file key.
+- Manual starter: duplicate or import a starter `.fig` file in Figma, then use the new cloud file key.
+
+A committed `.fig` starter can be a useful disposable fallback, but the generated Figma cloud file ID is account-specific. Plain npm cannot turn a binary `.fig` into a new editable cloud file ID; Codex must use Figma MCP or a human must import it.
+
+For existing/manual files, confirm in Figma:
 
 1. Create or open the customer project file.
 2. Add a page or frame for generated work, typically named `Generation Workspace`.
@@ -42,13 +50,13 @@ Expected Assets connection:
 
 ## 3. Prepare Environment Values
 
-Live Figma runs require a token and file key. The CLI loads `.env` from the repository root automatically.
+Live Figma runs require a token and file key. `npm run setup:local` creates `.env` from `.env.example` when missing. The CLI loads `.env` from the repository root automatically.
 
 ```bash
 cp .env.example .env
 ```
 
-Then edit `.env`:
+Then edit `.env` if setup did not already create it:
 
 ```dotenv
 FIGMA_ACCESS_TOKEN="<figma-api-token>"
@@ -60,6 +68,8 @@ Optional hints:
 ```dotenv
 FIGMA_GENERATION_PAGE="Generation Workspace"
 FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
+FIGMA_PLAN_KEY="<optional-plan-key-for-non-interactive-MCP-file-creation>"
+FIGMA_PROJECT_ID="<optional-project-id-for-non-interactive-MCP-file-creation>"
 ```
 
 Live bootstrap assumes write access, connected Assets, and screenshot export are available unless explicitly set to `false` with `FIGMA_CAN_WRITE`, `FIGMA_LIBRARY_CONNECTED_ASSETS`, or `FIGMA_CAN_SCREENSHOT`.

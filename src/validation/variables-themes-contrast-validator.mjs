@@ -2,6 +2,7 @@ import {
   normalizeVariableReferences,
   validateVariablePolicy
 } from "../rules/variable-policy.mjs";
+import { APCAcontrast, sRGBtoY } from "apca-w3";
 
 const schemaVersion = "1.0.0";
 const kind = "figma-variables-themes-contrast-validation";
@@ -55,7 +56,8 @@ export const variablesThemesContrastRuleIds = Object.freeze([
   "variables.alias-chain",
   "variables.final-binding-level",
   "themes.mode-resolution",
-  "contrast.wcag-expectations"
+  "contrast.wcag-2.2-aaa",
+  "contrast.apca-gold"
 ]);
 
 export function validateVariablesThemesContrast(input = {}, options = {}) {
@@ -246,27 +248,46 @@ function validateContrastChecks(context, variableIndex) {
       continue;
     }
 
+    const modeLabel = check.modeName ?? check.modeId ?? "selected mode";
     const ratio = contrastRatio(foreground, background);
-    if (ratio >= check.minRatio) {
-      continue;
+    const wcagMinRatio = wcagAaaMinRatio(check);
+    if (ratio < wcagMinRatio) {
+      issues.push(
+        issue({
+          code: "WCAG22_AAA_CONTRAST_FAILED",
+          category: "contrast",
+          severity: check.severity,
+          message: `${check.name} WCAG 2.2 AAA contrast is ${formatRatio(ratio)}, below ${formatRatio(
+            wcagMinRatio
+          )} in ${modeLabel}.`,
+          node: check.node,
+          expected: `WCAG 2.2 SC 1.4.6 Contrast (Enhanced) AAA ratio >= ${formatRatio(wcagMinRatio)}.`,
+          actual: `WCAG ratio ${formatRatio(ratio)}; foreground=${colorToHex(foreground)}; background=${colorToHex(background)}.`,
+          recommendation:
+            "Use a stronger existing semantic text/surface variable pair. If the design system has no pair that passes AAA, report an accessibility Design System Gap before proceeding."
+        })
+      );
     }
 
-    const modeLabel = check.modeName ?? check.modeId ?? "selected mode";
-    issues.push(
-      issue({
-        code: "CONTRAST_EXPECTATION_FAILED",
-        category: "contrast",
-        severity: check.severity,
-        message: `${check.name} contrast is ${formatRatio(ratio)}, below ${formatRatio(
-          check.minRatio
-        )} in ${modeLabel}.`,
-        node: check.node,
-        expected: `Contrast ratio >= ${formatRatio(check.minRatio)}.`,
-        actual: `Contrast ratio ${formatRatio(ratio)}.`,
-        recommendation:
-          "Use a stronger semantic text or surface variable, or record a Design System Gap if no suitable token exists."
-      })
-    );
+    const apcaLc = Math.abs(apcaContrastLc(foreground, background));
+    const apcaMinLc = apcaGoldMinLc(check);
+    if (apcaLc < apcaMinLc) {
+      issues.push(
+        issue({
+          code: "APCA_GOLD_CONTRAST_FAILED",
+          category: "contrast",
+          severity: check.severity,
+          message: `${check.name} APCA Gold contrast is Lc ${formatLc(apcaLc)}, below Lc ${formatLc(
+            apcaMinLc
+          )} in ${modeLabel}.`,
+          node: check.node,
+          expected: `APCA Readability Criterion Gold Lc >= ${formatLc(apcaMinLc)} for ${check.apcaUseCase}.`,
+          actual: `APCA Lc ${formatLc(apcaLc)}; foreground=${colorToHex(foreground)}; background=${colorToHex(background)}.`,
+          recommendation:
+            "Use a stronger existing semantic text/surface variable pair that passes APCA Gold. If none exists, report an accessibility Design System Gap before proceeding."
+        })
+      );
+    }
   }
 
   return issues;
@@ -360,6 +381,13 @@ function normalizeRawFinalValue(rawValue = {}) {
 }
 
 function normalizeContrastCheck(check = {}) {
+  const textSize = Number(check.textSize ?? check.fontSize ?? check.typography?.fontSize ?? 0);
+  const fontWeight = Number(check.fontWeight ?? check.typography?.fontWeight ?? 400);
+  const largeText = Boolean(check.largeText ?? isWcagLargeText({ textSize, fontWeight }));
+  const apcaUseCase = normalizeApcaUseCase(check.apcaUseCase ?? check.useCase ?? (largeText ? "large_text" : "body_text"));
+  const requestedMinRatio = Number(check.minRatio ?? check.expectedRatio ?? check.threshold ?? 0);
+  const requestedMinLc = Number(check.apcaMinLc ?? check.minLc ?? check.expectedLc ?? 0);
+
   return {
     name: check.name ?? check.label ?? check.code ?? "Contrast expectation",
     foreground:
@@ -374,7 +402,12 @@ function normalizeContrastCheck(check = {}) {
       check.backgroundVariableId ??
       check.surfaceColor ??
       check.surfaceVariableId,
-    minRatio: Number(check.minRatio ?? check.expectedRatio ?? check.threshold ?? 4.5),
+    minRatio: Math.max(requestedMinRatio, largeText ? 4.5 : 7),
+    apcaMinLc: Math.max(requestedMinLc, apcaGoldMinLc({ apcaUseCase })),
+    apcaUseCase,
+    textSize,
+    fontWeight,
+    largeText,
     modeId: check.modeId,
     modeName: check.modeName ?? check.mode,
     severity: check.severity ?? "error",
@@ -584,6 +617,54 @@ function contrastRatio(foreground, background) {
   const darker = Math.min(relativeLuminance(fg), relativeLuminance(bg));
 
   return (lighter + 0.05) / (darker + 0.05);
+}
+
+function apcaContrastLc(foreground, background) {
+  const fg = foreground.a < 1 ? composite(foreground, background) : foreground;
+  const bg = background.a < 1 ? composite(background, { r: 1, g: 1, b: 1, a: 1 }) : background;
+  return APCAcontrast(sRGBtoY(colorToSrgb255(fg)), sRGBtoY(colorToSrgb255(bg)));
+}
+
+function wcagAaaMinRatio(check) {
+  return Math.max(Number(check.minRatio ?? 0), check.largeText ? 4.5 : 7);
+}
+
+function apcaGoldMinLc(check) {
+  const baselineByUseCase = {
+    body_text: 90,
+    fluent_text: 90,
+    content_text: 90,
+    large_text: 75,
+    sub_fluent_text: 75,
+    spot_text: 75,
+    placeholder_text: 75,
+    disabled_text: 75,
+    logo: 60,
+    non_text: 60
+  };
+  const baseline = baselineByUseCase[normalizeApcaUseCase(check.apcaUseCase)] ?? 90;
+  return Math.max(Number(check.apcaMinLc ?? 0), baseline);
+}
+
+function normalizeApcaUseCase(value) {
+  return String(value ?? "body_text")
+    .trim()
+    .toLowerCase()
+    .replaceAll("-", "_")
+    .replaceAll(" ", "_");
+}
+
+function isWcagLargeText({ textSize, fontWeight }) {
+  if (!Number.isFinite(textSize) || textSize <= 0) {
+    return false;
+  }
+  return textSize >= 24 || (textSize >= 18.66 && fontWeight >= 700);
+}
+
+function colorToSrgb255(color) {
+  return [color.r, color.g, color.b].map((channel) =>
+    Math.max(0, Math.min(255, Math.round(channel * 255)))
+  );
 }
 
 function composite(foreground, background) {
@@ -811,6 +892,17 @@ function describeColorInput(input) {
 
 function formatRatio(value) {
   return Number(value).toFixed(2);
+}
+
+function formatLc(value) {
+  return Number(value).toFixed(1);
+}
+
+function colorToHex(color) {
+  const [r, g, b] = colorToSrgb255(color).map((channel) =>
+    channel.toString(16).padStart(2, "0")
+  );
+  return `#${r}${g}${b}`;
 }
 
 function toColorLabel(value) {

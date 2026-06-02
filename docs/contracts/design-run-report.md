@@ -42,6 +42,15 @@ A provisional extension must be tied to a `designSystemGaps[].id` through `gapId
 
 The schema allows `status: "proposed"` so an unapproved report can document the proposal without implying it was created.
 
+## Contrast Issues
+
+Contrast validation is intentionally stricter than WCAG AA. A run can pass only when text contrast satisfies WCAG 2.2 AAA and the repository's APCA Gold gate. Reports should preserve the exact validator issue codes so iteration planning can route them back to existing variable repair:
+
+- `WCAG22_AAA_CONTRAST_FAILED`
+- `APCA_GOLD_CONTRAST_FAILED`
+
+The `expected`, `actual`, and `recommendation` fields should include the measured WCAG ratio or APCA Lc value and instruct the next agent to use stronger existing semantic text/surface variables before reporting an accessibility Design System Gap.
+
 ## Example
 
 `fixtures/reports/design-run-report.valid.json` is a valid example report that exercises validation issues, component and variable usage, a Design System gap, a provisional extension, screenshots, iteration notes, and Figma node links.

@@ -34,6 +34,7 @@ Required behavior:
 - Configure instances through official component properties, variants, modes, exposed variables, and documented nested structures.
 - Preserve auto layout, constraints, resizing behavior, and editability of the placed library assets.
 - Use approved layout and spacing rules from the rule skills after the library structure is understood.
+- Enforce [Contrast Policy](./contrast-policy.md): WCAG 2.2 AAA and APCA Gold both have to pass.
 - Include component and variable usage in the Design Run Report.
 
 Prohibited behavior:
@@ -215,4 +216,3 @@ Approval requests should be concrete and minimal:
 - Ask for a clear approve or reject decision.
 
 If approval is rejected, Codex should use the closest compliant library-only alternative or stop the blocked portion of the design run and record the unresolved gap.
-

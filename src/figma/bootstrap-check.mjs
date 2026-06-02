@@ -366,10 +366,31 @@ function collectScreenshotNodeIds(runContext, file, options) {
     ...(Array.isArray(runContext?.screenshots?.items)
       ? runContext.screenshots.items.map((item) => item.nodeId)
       : []),
-    ...collectWorkspaceNodeIds(runContext?.generationWorkspace)
+    ...collectWorkspaceNodeIds(runContext?.generationWorkspace),
+    findFirstExportableNodeId(file?.document)
   ];
 
   return [...new Set(nodeIds.filter((nodeId) => typeof nodeId === "string" && nodeId.length > 0))];
+}
+
+function findFirstExportableNodeId(node) {
+  if (!node || typeof node !== "object") {
+    return null;
+  }
+
+  if (node.id && !["DOCUMENT", "PAGE", "CANVAS"].includes(node.type)) {
+    return node.id;
+  }
+
+  for (const child of node.children ?? []) {
+    const nodeId = findFirstExportableNodeId(child);
+
+    if (nodeId) {
+      return nodeId;
+    }
+  }
+
+  return null;
 }
 
 function collectWorkspaceNodeIds(generationWorkspace) {

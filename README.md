@@ -45,10 +45,10 @@ Optional hints:
 ```dotenv
 FIGMA_GENERATION_PAGE="Generation Workspace"
 FIGMA_LIBRARY_NAME="New Engine Figma UI Library"
-FIGMA_BOOTSTRAP_NODE_ID=2:2
 ```
 
 Live bootstrap assumes write access, connected Assets, and screenshot export are available unless explicitly set to `false` with `FIGMA_CAN_WRITE`, `FIGMA_LIBRARY_CONNECTED_ASSETS`, or `FIGMA_CAN_SCREENSHOT`.
+It automatically selects a screenshot probe node from the file; set `FIGMA_BOOTSTRAP_NODE_ID=2:2` only when you want to force a specific node.
 
 Also confirm the Figma file has:
 

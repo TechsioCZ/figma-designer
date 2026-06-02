@@ -7,7 +7,7 @@ node_modules/
 # Per-run disposable artifacts. Keep fixture placeholders committed.
 runs/*
 !runs/.gitkeep
-reports/design-runs/*
-!reports/design-runs/.gitkeep
-reports/screenshots/*
-!reports/screenshots/.gitkeep
+reports/**
+!reports/
+!reports/**/
+!reports/**/.gitkeep

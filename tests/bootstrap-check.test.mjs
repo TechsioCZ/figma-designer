@@ -132,6 +132,61 @@ test("bootstrap check accepts live operator-confirmed assets when optional REST 
   }
 });
 
+test("bootstrap check can infer a screenshot probe node from the Figma document", async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "figma-bootstrap-infer-node-"));
+
+  try {
+    const result = await runBootstrapCheck({
+      mode: "fixture",
+      fixture: {
+        fileKey: "bootstrap-infer-node-file",
+        file: {
+          key: "bootstrap-infer-node-file",
+          name: "Bootstrap Infer Node Fixture",
+          document: {
+            type: "DOCUMENT",
+            children: [
+              {
+                id: "0:1",
+                name: "Generation Workspace",
+                type: "PAGE",
+                children: [{ id: "8:1", name: "Probe Frame", type: "FRAME", children: [] }]
+              }
+            ]
+          },
+          libraries: [
+            {
+              libraryId: "new-engine-ui",
+              name: "New Engine Figma UI Library",
+              connectedAsAssets: true,
+              status: "connected",
+              source: "fixture"
+            }
+          ]
+        },
+        canWrite: true,
+        canScreenshot: true,
+        components: [{ key: "button-key", node_id: "8:2", name: "Button" }],
+        componentSets: [],
+        variables: {
+          meta: {
+            variables: { "VariableID:button-bg": { name: "component/button/background/primary" } },
+            variableCollections: {}
+          }
+        },
+        images: { "8:1": "https://example.com/probe.png" }
+      },
+      reportOutputPath: path.join(tempDir, "design-run-report.json")
+    });
+    const checks = Object.fromEntries(result.checks.map((check) => [check.name, check]));
+
+    assert.equal(result.ok, true);
+    assert.deepEqual(checks.screenshots.details.exportedNodeIds, ["8:1"]);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("bootstrap check reports access failures before dependent checks", async () => {
   const result = await runBootstrapCheck({
     fixturePath: path.join(repoRoot, "fixtures/bootstrap/missing.json")

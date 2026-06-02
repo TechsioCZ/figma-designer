@@ -1,0 +1,34 @@
+{
+  "briefId": "brief-login-library-only",
+  "runId": "run-generate-login",
+  "title": "Customer Login Screen",
+  "description": "Create a login screen from connected library assets only.",
+  "intent": "login",
+  "screenName": "Login Screen",
+  "targetId": "login-screen",
+  "dimensions": {
+    "width": 1440,
+    "height": 1024
+  },
+  "requiredComponents": ["Text Field", "Button"],
+  "fields": [
+    {
+      "name": "Email Field",
+      "label": "Email",
+      "helperTextVisible": true
+    },
+    {
+      "name": "Password Field",
+      "label": "Password",
+      "helperTextVisible": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "Submit Button",
+      "label": "Sign in",
+      "variant": "Primary",
+      "prototypeTarget": "dashboard-screen"
+    }
+  ]
+}

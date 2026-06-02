@@ -1,0 +1,110 @@
+{
+  "kind": "figma-layout-fixture",
+  "source": "fixture",
+  "root": {
+    "id": "0:0",
+    "name": "Customer Screens",
+    "type": "PAGE",
+    "children": [
+      {
+        "id": "10:1",
+        "name": "Dashboard / Desktop",
+        "type": "FRAME",
+        "layoutRole": "page",
+        "layoutMode": "VERTICAL",
+        "primaryAxisAlignItems": "MIN",
+        "counterAxisAlignItems": "MIN",
+        "layoutSizingHorizontal": "FIXED",
+        "layoutSizingVertical": "HUG",
+        "editable": true,
+        "locked": false,
+        "children": [
+          {
+            "id": "10:2",
+            "name": "Header section",
+            "type": "SECTION",
+            "layoutRole": "section",
+            "layoutMode": "VERTICAL",
+            "primaryAxisAlignItems": "MIN",
+            "counterAxisAlignItems": "MIN",
+            "layoutSizingHorizontal": "FILL",
+            "layoutSizingVertical": "HUG",
+            "editable": true,
+            "locked": false,
+            "children": [
+              {
+                "id": "10:3",
+                "name": "Header container",
+                "type": "FRAME",
+                "layoutRole": "container",
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": "SPACE_BETWEEN",
+                "counterAxisAlignItems": "CENTER",
+                "layoutSizingHorizontal": "FILL",
+                "layoutSizingVertical": "HUG",
+                "editable": true,
+                "locked": false,
+                "children": [
+                  {
+                    "id": "10:4",
+                    "name": "Page title",
+                    "type": "INSTANCE",
+                    "componentKey": "heading-title-key",
+                    "layoutSizingHorizontal": "FILL",
+                    "layoutSizingVertical": "HUG"
+                  },
+                  {
+                    "id": "10:5",
+                    "name": "Primary action",
+                    "type": "INSTANCE",
+                    "componentKey": "button-primary-medium-key",
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "10:6",
+            "name": "Main content section",
+            "type": "SECTION",
+            "layoutRole": "section",
+            "layoutMode": "VERTICAL",
+            "primaryAxisAlignItems": "MIN",
+            "counterAxisAlignItems": "MIN",
+            "layoutSizingHorizontal": "FILL",
+            "layoutSizingVertical": "HUG",
+            "editable": true,
+            "locked": false,
+            "children": [
+              {
+                "id": "10:7",
+                "name": "Content container",
+                "type": "FRAME",
+                "layoutRole": "container",
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "MIN",
+                "counterAxisAlignItems": "MIN",
+                "layoutSizingHorizontal": "FILL",
+                "layoutSizingVertical": "HUG",
+                "editable": true,
+                "locked": false,
+                "children": [
+                  {
+                    "id": "10:8",
+                    "name": "Summary card",
+                    "type": "INSTANCE",
+                    "componentKey": "summary-card-key",
+                    "layoutSizingHorizontal": "FILL",
+                    "layoutSizingVertical": "HUG"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

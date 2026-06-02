@@ -1,0 +1,44 @@
+{
+  "fileKey": "bootstrap-failure-file",
+  "file": {
+    "key": "bootstrap-failure-file",
+    "name": "Bootstrap Failure Fixture",
+    "document": {
+      "type": "DOCUMENT",
+      "children": [
+        {
+          "id": "0:1",
+          "name": "Generation Workspace",
+          "type": "PAGE",
+          "children": []
+        }
+      ]
+    },
+    "libraries": [
+      {
+        "libraryId": "new-engine-ui",
+        "name": "New Engine Figma UI Library",
+        "connectedAsAssets": false,
+        "status": "missing",
+        "source": "fixture"
+      }
+    ],
+    "bootstrap": {
+      "screenshotNodeIds": ["10:1"],
+      "reportOutputAvailable": false
+    }
+  },
+  "generationPage": "Generation Workspace",
+  "libraryName": "New Engine Figma UI Library",
+  "canWrite": false,
+  "canScreenshot": false,
+  "components": [],
+  "componentSets": [],
+  "variables": {
+    "meta": {
+      "variables": {},
+      "variableCollections": {}
+    }
+  },
+  "images": {}
+}

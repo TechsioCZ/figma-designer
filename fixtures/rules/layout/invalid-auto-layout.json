@@ -1,0 +1,46 @@
+{
+  "kind": "figma-layout-fixture",
+  "source": "fixture",
+  "root": {
+    "id": "0:0",
+    "name": "Customer Screens",
+    "type": "PAGE",
+    "children": [
+      {
+        "id": "20:1",
+        "name": "Checkout / Desktop",
+        "type": "FRAME",
+        "layoutRole": "page",
+        "layoutMode": "NONE",
+        "primaryAxisAlignItems": "MIN",
+        "counterAxisAlignItems": "MIN",
+        "children": [
+          {
+            "id": "20:2",
+            "name": "Form section",
+            "type": "SECTION",
+            "layoutRole": "section",
+            "layoutMode": "HORIZONTAL",
+            "primaryAxisAlignItems": "MIN",
+            "counterAxisAlignItems": "CENTER",
+            "layoutSizingHorizontal": "FILL",
+            "children": [
+              {
+                "id": "20:3",
+                "name": "Email field",
+                "type": "INSTANCE",
+                "componentKey": "text-field-default-key"
+              },
+              {
+                "id": "20:4",
+                "name": "Password field",
+                "type": "INSTANCE",
+                "componentKey": "text-field-default-key"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

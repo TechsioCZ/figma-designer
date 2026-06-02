@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://techsiocz.github.io/figma-designer/schemas/run-context.schema.json",
+  "title": "Figma Designer Run Context",
+  "description": "Per-run context shared by Figma Designer skills. It identifies the active Figma file, Generation Workspace targets, connected library assets, live discovery references, variable references, screenshot outputs, and ephemeral cache paths for one run only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "createdAt",
+    "figmaFile",
+    "generationWorkspace",
+    "libraries",
+    "discovery",
+    "variables",
+    "screenshots",
+    "artifacts"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "runId": {
+      "type": "string",
+      "description": "Stable identifier for this operator run. Reuse this value across cache files, screenshots, and reports produced during the same run.",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "description": "ISO 8601 timestamp for when this run context was created.",
+      "format": "date-time"
+    },
+    "operator": {
+      "type": "object",
+      "description": "Optional human-readable operator context. This is not auth state.",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "briefId": { "type": "string", "minLength": 1 },
+        "notes": { "type": "string" }
+      }
+    },
+    "figmaFile": { "$ref": "#/$defs/figmaFileRef" },
+    "generationWorkspace": { "$ref": "#/$defs/generationWorkspace" },
+    "libraries": {
+      "type": "array",
+      "description": "Figma libraries expected to be connected as Assets for this run. These references describe the live source of truth; they are not a local Design System manifest.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/libraryRef" }
+    },
+    "discovery": { "$ref": "#/$defs/discoveryContext" },
+    "variables": { "$ref": "#/$defs/variableContext" },
+    "screenshots": { "$ref": "#/$defs/screenshotContext" },
+    "artifacts": { "$ref": "#/$defs/artifactContext" }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "description": "Repository-relative path unless explicitly documented otherwise.",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+"
+    },
+    "figmaFileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileKey", "url"],
+      "properties": {
+        "fileKey": {
+          "type": "string",
+          "description": "Figma file key from the file URL.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "fileName": { "type": "string", "minLength": 1 },
+        "branchKey": {
+          "type": "string",
+          "description": "Optional Figma branch key when the run targets a branch.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "url": {
+          "type": "string",
+          "description": "Canonical Figma design file URL.",
+          "format": "uri"
+        },
+        "baseUrl": {
+          "type": "string",
+          "description": "Figma host used by MCP/API calls.",
+          "format": "uri",
+          "default": "https://www.figma.com"
+        }
+      }
+    },
+    "figmaNodeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodeId", "name"],
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "description": "Raw Figma node ID, usually in colon-delimited form such as 12:34.",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9:;._-]+$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "description": "Figma node type when known.",
+          "enum": [
+            "PAGE",
+            "FRAME",
+            "GROUP",
+            "SECTION",
+            "COMPONENT",
+            "COMPONENT_SET",
+            "INSTANCE",
+            "TEXT",
+            "RECTANGLE",
+            "VECTOR",
+            "STYLE",
+            "VARIABLE_COLLECTION",
+            "UNKNOWN"
+          ]
+        },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "generationWorkspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["page", "root", "targets"],
+      "properties": {
+        "page": {
+          "description": "Generation Workspace page. It may be pre-existing or created by bootstrap.",
+          "$ref": "#/$defs/figmaNodeRef"
+        },
+        "root": {
+          "description": "Frame or section under the Generation Workspace page where this run may create customer screens.",
+          "$ref": "#/$defs/workspaceTarget"
+        },
+        "targets": {
+          "type": "array",
+          "description": "Concrete screen or flow targets for this run.",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/workspaceTarget" }
+        }
+      }
+    },
+    "workspaceTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetId", "name", "status"],
+      "properties": {
+        "targetId": {
+          "type": "string",
+          "description": "Run-local stable target identifier used by reports and screenshots.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "enum": ["planned", "existing", "created"] },
+        "node": {
+          "description": "Figma node once the target exists.",
+          "$ref": "#/$defs/figmaNodeRef"
+        },
+        "intent": {
+          "type": "string",
+          "description": "Short purpose for the generated target.",
+          "minLength": 1
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": {
+            "width": { "type": "integer", "minimum": 1 },
+            "height": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "screenshotRequired": { "type": "boolean", "default": true }
+      }
+    },
+    "libraryRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["libraryId", "name", "connectedAsAssets", "status"],
+      "properties": {
+        "libraryId": {
+          "type": "string",
+          "description": "Run-local stable library identifier.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "fileKey": {
+          "type": "string",
+          "description": "Figma library file key when known.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "teamLibraryKey": {
+          "type": "string",
+          "description": "Figma team library key or API library key when exposed by discovery.",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "url": { "type": "string", "format": "uri" },
+        "connectedAsAssets": {
+          "type": "boolean",
+          "description": "True only when the target Figma file has this library connected in Assets."
+        },
+        "status": { "type": "string", "enum": ["connected", "missing", "unknown"] },
+        "source": {
+          "type": "string",
+          "enum": ["figma_assets", "figma_team_library", "operator_provided", "fixture"],
+          "default": "figma_assets"
+        }
+      }
+    },
+    "discoveryContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "discoveredAt", "cachePath", "nodes"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Where the discovery references came from for this run.",
+          "enum": ["live_figma", "fixture"]
+        },
+        "discoveredAt": { "type": "string", "format": "date-time" },
+        "cachePath": { "$ref": "#/$defs/path" },
+        "nestingMapPath": { "$ref": "#/$defs/path" },
+        "nodes": {
+          "type": "array",
+          "description": "Node IDs discovered or selected during this run. This is a scoped reference list, not a permanent manifest.",
+          "items": { "$ref": "#/$defs/discoveredNodeRef" }
+        }
+      }
+    },
+    "discoveredNodeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "node"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "generation_page",
+            "generation_root",
+            "target_frame",
+            "library_component_set",
+            "library_component",
+            "library_instance_example",
+            "slot",
+            "style",
+            "component_property_host",
+            "other"
+          ]
+        },
+        "node": { "$ref": "#/$defs/figmaNodeRef" },
+        "libraryId": {
+          "type": "string",
+          "description": "References libraries[].libraryId when this node belongs to a connected library.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$"
+        },
+        "parentNodeId": { "type": "string", "minLength": 1 },
+        "componentKey": {
+          "type": "string",
+          "description": "Figma component key when exposed by discovery.",
+          "minLength": 1
+        },
+        "componentSetKey": {
+          "type": "string",
+          "description": "Figma component set key when exposed by discovery.",
+          "minLength": 1
+        },
+        "propertyNames": {
+          "type": "array",
+          "description": "Component property names that are relevant to this run.",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "variableContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collections", "references"],
+      "properties": {
+        "collections": {
+          "type": "array",
+          "description": "Variable collections available to this run.",
+          "items": { "$ref": "#/$defs/variableCollectionRef" }
+        },
+        "references": {
+          "type": "array",
+          "description": "Variables selected, bound, or validated during this run.",
+          "items": { "$ref": "#/$defs/variableRef" }
+        }
+      }
+    },
+    "variableCollectionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collectionId", "name"],
+      "properties": {
+        "collectionId": { "type": "string", "minLength": 1 },
+        "collectionKey": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "libraryId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$" },
+        "modes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/variableModeRef" }
+        }
+      }
+    },
+    "variableModeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modeId", "name"],
+      "properties": {
+        "modeId": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "variableRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variableId", "name", "collectionId", "role"],
+      "properties": {
+        "variableId": { "type": "string", "minLength": 1 },
+        "variableKey": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "collectionId": { "type": "string", "minLength": 1 },
+        "role": {
+          "type": "string",
+          "description": "Position in the expected primitive -> semantic -> component variable chain.",
+          "enum": ["primitive", "semantic", "component", "unknown"]
+        },
+        "type": { "type": "string", "enum": ["COLOR", "FLOAT", "STRING", "BOOLEAN", "UNKNOWN"] },
+        "resolvedModeId": { "type": "string", "minLength": 1 },
+        "boundNodeIds": {
+          "type": "array",
+          "description": "Figma node IDs where this variable is expected to be bound during the run.",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "aliasChain": {
+          "type": "array",
+          "description": "Known variable alias path for this run, ordered from this variable toward its primitive source when known.",
+          "items": { "$ref": "#/$defs/variableChainLink" }
+        }
+      }
+    },
+    "variableChainLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variableId", "name", "role"],
+      "properties": {
+        "variableId": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "enum": ["primitive", "semantic", "component", "unknown"] }
+      }
+    },
+    "screenshotContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outputDir", "items"],
+      "properties": {
+        "outputDir": { "$ref": "#/$defs/path" },
+        "items": {
+          "type": "array",
+          "description": "Screenshot outputs expected or produced during this run.",
+          "items": { "$ref": "#/$defs/screenshotRef" }
+        }
+      }
+    },
+    "screenshotRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenshotId", "targetId", "nodeId", "path", "status"],
+      "properties": {
+        "screenshotId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$"
+        },
+        "targetId": {
+          "type": "string",
+          "description": "References generationWorkspace.targets[].targetId or generationWorkspace.root.targetId.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$"
+        },
+        "nodeId": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["workspace", "target", "validation", "comparison", "report"],
+          "default": "target"
+        },
+        "path": { "$ref": "#/$defs/path" },
+        "status": { "type": "string", "enum": ["planned", "captured", "failed"] },
+        "mimeType": {
+          "type": "string",
+          "enum": ["image/png", "image/jpeg", "image/webp"],
+          "default": "image/png"
+        },
+        "scale": { "type": "number", "exclusiveMinimum": 0 },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "capturedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "artifactContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runRoot", "cache", "reports", "screenshots"],
+      "properties": {
+        "runRoot": { "$ref": "#/$defs/path" },
+        "cache": { "$ref": "#/$defs/cacheArtifactContext" },
+        "reports": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outputDir"],
+          "properties": {
+            "outputDir": { "$ref": "#/$defs/path" },
+            "designRunReportPath": { "$ref": "#/$defs/path" }
+          }
+        },
+        "screenshots": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outputDir"],
+          "properties": {
+            "outputDir": { "$ref": "#/$defs/path" }
+          }
+        }
+      }
+    },
+    "cacheArtifactContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rootDir", "lifetime", "disposable", "paths"],
+      "properties": {
+        "rootDir": { "$ref": "#/$defs/path" },
+        "lifetime": {
+          "type": "string",
+          "description": "Run caches are valid only for the runId that created them.",
+          "const": "single_run"
+        },
+        "disposable": {
+          "type": "boolean",
+          "description": "True means this cache can be deleted after reporting without losing design-system truth.",
+          "const": true
+        },
+        "paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["discovery", "nestingMap", "figmaResponses"],
+          "properties": {
+            "discovery": { "$ref": "#/$defs/path" },
+            "nestingMap": { "$ref": "#/$defs/path" },
+            "figmaResponses": { "$ref": "#/$defs/path" },
+            "variables": { "$ref": "#/$defs/path" }
+          }
+        }
+      }
+    }
+  }
+}

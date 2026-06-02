@@ -1,0 +1,46 @@
+{
+  "kind": "figma-layout-fixture",
+  "source": "fixture",
+  "root": {
+    "id": "0:0",
+    "name": "Customer Screens",
+    "type": "PAGE",
+    "children": [
+      {
+        "id": "30:1",
+        "name": "Loose layout / Desktop",
+        "type": "FRAME",
+        "layoutRole": "page",
+        "layoutMode": "VERTICAL",
+        "primaryAxisAlignItems": "MIN",
+        "counterAxisAlignItems": "MIN",
+        "children": [
+          {
+            "id": "30:2",
+            "name": "Logo",
+            "type": "INSTANCE",
+            "componentKey": "logo-key"
+          },
+          {
+            "id": "30:3",
+            "name": "Ad hoc wrapper",
+            "type": "FRAME",
+            "layoutRole": "container",
+            "layoutMode": "VERTICAL",
+            "primaryAxisAlignItems": "MIN",
+            "counterAxisAlignItems": "MIN",
+            "layoutSizingHorizontal": "FILL",
+            "children": [
+              {
+                "id": "30:4",
+                "name": "Hero title",
+                "type": "INSTANCE",
+                "componentKey": "heading-title-key"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

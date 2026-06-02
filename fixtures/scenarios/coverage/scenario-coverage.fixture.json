@@ -1,0 +1,341 @@
+{
+  "spacingScenarios": {
+    "checkoutFormSpacing": {
+      "source": "scenario-checkout-form-spacing",
+      "spacing": {
+        "nodes": [
+          {
+            "nodeId": "scenario:checkout-form-spacing",
+            "name": "Checkout payment form spacing",
+            "role": "form_item",
+            "relationships": [
+              {
+                "kind": "label_to_control",
+                "patternId": "login-form-pattern"
+              },
+              {
+                "kind": "control_to_help",
+                "patternId": "login-form-pattern"
+              },
+              {
+                "kind": "item_to_item",
+                "patternId": "login-form-pattern"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "dashboardPageSpacing": {
+      "source": "scenario-dashboard-page-spacing",
+      "spacingContext": {
+        "spacingGuidance": {
+          "variables": [
+            {
+              "variableId": "VariableID:semantic-dashboard-section-gap",
+              "variableKey": "semantic-dashboard-section-gap-key",
+              "name": "semantic/spacing/page-section/rhythm",
+              "role": "semantic",
+              "type": "FLOAT",
+              "appliesTo": ["page_section"],
+              "valuesByMode": {
+                "ModeId:default": 32
+              },
+              "aliasChain": [
+                {
+                  "variableId": "VariableID:semantic-dashboard-section-gap",
+                  "name": "semantic/spacing/page-section/rhythm",
+                  "role": "semantic"
+                },
+                {
+                  "variableId": "VariableID:spacing-200",
+                  "name": "primitive/spacing/200",
+                  "role": "primitive"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "spacing": {
+        "nodes": [
+          {
+            "nodeId": "scenario:dashboard-page-spacing",
+            "name": "Dashboard page section rhythm",
+            "role": "page_section",
+            "relationships": [
+              {
+                "kind": "section_to_section",
+                "variableId": "VariableID:semantic-dashboard-section-gap"
+              },
+              {
+                "kind": "section_padding",
+                "variableId": "VariableID:semantic-dashboard-section-gap"
+              },
+              {
+                "kind": "container_gutter",
+                "variableId": "VariableID:semantic-dashboard-section-gap"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rejectionScenarios": {
+    "slotMisuse": {
+      "design": {
+        "runId": "run-scenario-slot-misuse",
+        "nodes": [
+          {
+            "nodeId": "scenario:slot-button",
+            "name": "Checkout CTA With Wrong Slot Content",
+            "type": "INSTANCE",
+            "componentKey": "button-primary-medium-key",
+            "componentSetKey": "button-set-key",
+            "componentProperties": {
+              "Variant": {
+                "type": "VARIANT",
+                "value": "Primary"
+              },
+              "Size": {
+                "type": "VARIANT",
+                "value": "Medium"
+              },
+              "State": {
+                "type": "VARIANT",
+                "value": "Default"
+              },
+              "Label#200:14": {
+                "type": "TEXT",
+                "value": "Pay now"
+              },
+              "LeadingIcon#200:12": {
+                "type": "INSTANCE_SWAP",
+                "value": "icon-search-key"
+              }
+            },
+            "children": [
+              {
+                "nodeId": "scenario:slot-text-field",
+                "name": "Misplaced Text Field In Icon Slot",
+                "type": "INSTANCE",
+                "componentKey": "text-field-default-key",
+                "componentSetKey": "text-field-set-key",
+                "slotName": "LeadingIcon",
+                "slotPropertyName": "LeadingIcon#200:12"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "rawHex": {
+      "design": {
+        "runId": "run-scenario-raw-hex",
+        "nodes": [
+          {
+            "nodeId": "scenario:raw-hex-button",
+            "name": "Raw Hex Primary Button",
+            "type": "INSTANCE",
+            "componentKey": "button-primary-medium-key",
+            "fills": "#1A47CC"
+          }
+        ]
+      },
+      "rawFinalValues": [
+        {
+          "kind": "color",
+          "property": "fills",
+          "value": "#1A47CC",
+          "node": {
+            "nodeId": "scenario:raw-hex-button",
+            "name": "Raw Hex Primary Button",
+            "type": "INSTANCE"
+          }
+        }
+      ]
+    },
+    "detachedInstance": {
+      "design": {
+        "runId": "run-scenario-detached-instance",
+        "nodes": [
+          {
+            "nodeId": "scenario:detached-button",
+            "name": "Detached Checkout Button",
+            "type": "INSTANCE",
+            "componentKey": "button-primary-medium-key",
+            "componentSetKey": "button-set-key",
+            "detached": true,
+            "detachReason": "Add a one-off payment loading state instead of requesting a variant.",
+            "componentProperties": {
+              "Variant": {
+                "type": "VARIANT",
+                "value": "Primary"
+              },
+              "Size": {
+                "type": "VARIANT",
+                "value": "Medium"
+              },
+              "State": {
+                "type": "VARIANT",
+                "value": "Default"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "themeModeSwitching": {
+    "runId": "run-scenario-theme-mode-switching",
+    "variableCollections": [
+      {
+        "collectionId": "VariableCollectionId:colors",
+        "name": "Color",
+        "modes": [
+          {
+            "modeId": "ModeId:light",
+            "name": "Light"
+          },
+          {
+            "modeId": "ModeId:dark",
+            "name": "Dark"
+          }
+        ]
+      }
+    ],
+    "variables": [
+      {
+        "variableId": "VariableID:primitive-blue-600",
+        "name": "primitive/blue/600",
+        "level": "primitive",
+        "collectionId": "VariableCollectionId:colors",
+        "resolvedType": "COLOR",
+        "valuesByMode": {
+          "ModeId:light": {
+            "r": 0.1,
+            "g": 0.28,
+            "b": 0.8,
+            "a": 1
+          },
+          "ModeId:dark": {
+            "r": 0.45,
+            "g": 0.62,
+            "b": 1,
+            "a": 1
+          }
+        },
+        "aliasChain": [
+          {
+            "variableId": "VariableID:primitive-blue-600",
+            "name": "primitive/blue/600",
+            "level": "primitive"
+          }
+        ]
+      },
+      {
+        "variableId": "VariableID:semantic-action-primary",
+        "name": "semantic/action/primary",
+        "level": "semantic",
+        "collectionId": "VariableCollectionId:colors",
+        "resolvedType": "COLOR",
+        "valuesByMode": {
+          "ModeId:light": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:primitive-blue-600"
+          },
+          "ModeId:dark": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:primitive-blue-600"
+          }
+        },
+        "aliasChain": [
+          {
+            "variableId": "VariableID:semantic-action-primary",
+            "name": "semantic/action/primary",
+            "level": "semantic"
+          },
+          {
+            "variableId": "VariableID:primitive-blue-600",
+            "name": "primitive/blue/600",
+            "level": "primitive"
+          }
+        ]
+      },
+      {
+        "variableId": "VariableID:component-button-bg-primary",
+        "name": "component/button/background/primary",
+        "level": "component",
+        "collectionId": "VariableCollectionId:colors",
+        "resolvedType": "COLOR",
+        "valuesByMode": {
+          "ModeId:light": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:semantic-action-primary"
+          },
+          "ModeId:dark": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:semantic-action-primary"
+          }
+        },
+        "aliasChain": [
+          {
+            "variableId": "VariableID:component-button-bg-primary",
+            "name": "component/button/background/primary",
+            "level": "component"
+          },
+          {
+            "variableId": "VariableID:semantic-action-primary",
+            "name": "semantic/action/primary",
+            "level": "semantic"
+          },
+          {
+            "variableId": "VariableID:primitive-blue-600",
+            "name": "primitive/blue/600",
+            "level": "primitive"
+          }
+        ]
+      }
+    ],
+    "finalBindings": [
+      {
+        "property": "fills",
+        "variableId": "VariableID:component-button-bg-primary",
+        "node": {
+          "nodeId": "scenario:theme-mode-button",
+          "name": "Theme Aware Primary Button",
+          "type": "INSTANCE"
+        }
+      }
+    ],
+    "contrastChecks": [
+      {
+        "name": "Primary button label light",
+        "foreground": "#FFFFFF",
+        "background": "VariableID:component-button-bg-primary",
+        "minRatio": 4.5,
+        "modeId": "ModeId:light",
+        "modeName": "Light",
+        "node": {
+          "nodeId": "scenario:theme-mode-button",
+          "name": "Theme Aware Primary Button",
+          "type": "INSTANCE"
+        }
+      },
+      {
+        "name": "Primary button label dark",
+        "foreground": "#000000",
+        "background": "VariableID:component-button-bg-primary",
+        "minRatio": 4.5,
+        "modeId": "ModeId:dark",
+        "modeName": "Dark",
+        "node": {
+          "nodeId": "scenario:theme-mode-button",
+          "name": "Theme Aware Primary Button",
+          "type": "INSTANCE"
+        }
+      }
+    ]
+  }
+}

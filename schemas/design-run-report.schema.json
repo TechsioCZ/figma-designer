@@ -1,0 +1,739 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://techsiocz.github.io/figma-designer/schemas/design-run-report.schema.json",
+  "title": "Design Run Report",
+  "description": "Machine-readable report emitted after a Figma design run. The report records what was created, validation results, library coverage, Design System gaps, provisional extensions, screenshots, and iteration notes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "generatedAt",
+    "status",
+    "figmaFile",
+    "summary",
+    "screens",
+    "componentsUsed",
+    "variablesUsed",
+    "validation",
+    "designSystemGaps",
+    "provisionalExtensions",
+    "screenshots",
+    "iterationNotes"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runContextPath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional path to the run context artifact used for this report."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "$ref": "#/$defs/reportStatus"
+    },
+    "figmaFile": {
+      "$ref": "#/$defs/figmaFileRef"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "screenCount",
+        "componentUsageCount",
+        "variableUsageCount",
+        "validationIssueCount",
+        "designSystemGapCount",
+        "provisionalExtensionCount",
+        "screenshotCount"
+      ],
+      "properties": {
+        "screenCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "componentUsageCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "variableUsageCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "validationIssueCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "designSystemGapCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provisionalExtensionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "screenshotCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/screenResult"
+      }
+    },
+    "componentsUsed": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/componentUsage"
+      }
+    },
+    "variablesUsed": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/variableUsage"
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary", "issues"],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/validationStatus"
+        },
+        "summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["critical", "error", "warning", "info"],
+          "properties": {
+            "critical": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "error": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "warning": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "info": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/validationIssue"
+          }
+        }
+      }
+    },
+    "designSystemGaps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/designSystemGap"
+      }
+    },
+    "provisionalExtensions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provisionalExtension"
+      }
+    },
+    "screenshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/screenshot"
+      }
+    },
+    "iterationNotes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/iterationNote"
+      }
+    }
+  },
+  "$defs": {
+    "reportStatus": {
+      "type": "string",
+      "enum": ["passed", "failed", "blocked", "needs_iteration"]
+    },
+    "validationStatus": {
+      "type": "string",
+      "enum": ["passed", "failed", "not_run"]
+    },
+    "figmaFileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileKey", "name", "url"],
+      "properties": {
+        "fileKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "figmaNodeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodeId", "name", "url"],
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "screenResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "node", "status", "screenshotIds"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node": {
+          "$ref": "#/$defs/figmaNodeRef"
+        },
+        "status": {
+          "$ref": "#/$defs/reportStatus"
+        },
+        "briefReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "screenshotIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "validationIssueIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "componentUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "componentKey",
+        "name",
+        "source",
+        "usageCount",
+        "instanceNodes"
+      ],
+      "properties": {
+        "componentKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "enum": ["library", "local", "provisional"]
+        },
+        "componentSetKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variant": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean"]
+          }
+        },
+        "propertiesConfigured": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean"]
+          }
+        },
+        "usageCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "instanceNodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/figmaNodeRef"
+          }
+        }
+      }
+    },
+    "variableUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variableId", "name", "collection", "level", "usageCount"],
+      "properties": {
+        "variableId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variableKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "collection": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "type": "string",
+          "enum": ["primitive", "semantic", "component"]
+        },
+        "resolvedType": {
+          "type": "string",
+          "enum": ["color", "number", "string", "boolean"]
+        },
+        "aliasChain": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "usageCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "boundNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/figmaNodeRef"
+          }
+        }
+      }
+    },
+    "validationIssue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "code", "category", "severity", "status", "message"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "detached_component",
+            "raw_color",
+            "raw_spacing",
+            "raw_radius",
+            "raw_typography",
+            "broken_variable_alias",
+            "missing_variable_binding",
+            "invalid_slot_usage",
+            "layout_hygiene",
+            "contrast",
+            "theme_mode",
+            "prototype_dead_end",
+            "component_property",
+            "provisional_extension",
+            "screenshot",
+            "figma_setup",
+            "other"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "error", "warning", "info"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["open", "resolved", "waived"]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node": {
+          "$ref": "#/$defs/figmaNodeRef"
+        },
+        "relatedNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/figmaNodeRef"
+          }
+        },
+        "expected": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actual": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recommendation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "designSystemGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "severity",
+        "status",
+        "summary",
+        "neededCapability",
+        "searchedAlternatives",
+        "impact"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "component",
+            "variant",
+            "slot",
+            "component_property",
+            "variable",
+            "mode",
+            "style",
+            "pattern",
+            "layout",
+            "content",
+            "accessibility",
+            "other"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["open", "provisional_extension_proposed", "provisional_extension_approved", "resolved", "rejected"]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "neededCapability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "searchedAlternatives": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "result"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "result": {
+                "type": "string",
+                "minLength": 1
+              },
+              "node": {
+                "$ref": "#/$defs/figmaNodeRef"
+              }
+            }
+          }
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relatedNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/figmaNodeRef"
+          }
+        },
+        "provisionalExtensionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recommendedDesignSystemAction": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "provisionalExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gapId",
+        "status",
+        "approval",
+        "proposal",
+        "node",
+        "provisionalMarking",
+        "variableChain",
+        "promotionRecommendation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gapId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["proposed", "approved", "created", "rejected", "removed"]
+        },
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "granted"],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "granted": {
+              "type": "boolean"
+            },
+            "approvedBy": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approvedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "proposal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node": {
+          "$ref": "#/$defs/figmaNodeRef"
+        },
+        "provisionalMarking": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variableChain": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["level", "variableName"],
+            "properties": {
+              "level": {
+                "type": "string",
+                "enum": ["primitive", "semantic", "component"]
+              },
+              "variableName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "variableId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "aliasesTo": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "usedByNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/figmaNodeRef"
+          }
+        },
+        "promotionRecommendation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "screenshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "node", "path", "capturedAt", "purpose"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node": {
+          "$ref": "#/$defs/figmaNodeRef"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "capturedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": ["review", "validation", "before_iteration", "after_iteration", "comparison", "other"]
+        },
+        "theme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "iterationNote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "iteration", "createdAt", "authorRole", "category", "note"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iteration": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorRole": {
+          "type": "string",
+          "enum": ["codex", "designer", "operator", "validator"]
+        },
+        "category": {
+          "type": "string",
+          "enum": ["creation", "validation", "gap", "provisional_extension", "screenshot", "follow_up", "other"]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relatedValidationIssueIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "relatedGapIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "relatedProvisionalExtensionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "nextAction": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

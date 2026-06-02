@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "run-2026-06-02-example-login",
+  "createdAt": "2026-06-02T09:30:00.000Z",
+  "operator": {
+    "name": "Codex Figma Designer",
+    "briefId": "brief-login-v1",
+    "notes": "Fixture showing the run context contract without requiring live Figma access."
+  },
+  "figmaFile": {
+    "fileKey": "AbCdEfGhIjKlMnOpQrStUv",
+    "fileName": "Acme Customer Screens",
+    "url": "https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Acme-Customer-Screens",
+    "baseUrl": "https://www.figma.com"
+  },
+  "generationWorkspace": {
+    "page": {
+      "nodeId": "0:1",
+      "name": "Generation Workspace",
+      "type": "PAGE",
+      "url": "https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Acme-Customer-Screens?node-id=0-1"
+    },
+    "root": {
+      "targetId": "workspace-root",
+      "name": "Codex Runs",
+      "status": "existing",
+      "node": {
+        "nodeId": "10:1",
+        "name": "Codex Runs",
+        "type": "SECTION",
+        "url": "https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Acme-Customer-Screens?node-id=10-1"
+      },
+      "intent": "Container for generated customer screens.",
+      "screenshotRequired": false
+    },
+    "targets": [
+      {
+        "targetId": "login-screen",
+        "name": "Login Screen",
+        "status": "created",
+        "node": {
+          "nodeId": "42:100",
+          "name": "Login Screen",
+          "type": "FRAME",
+          "url": "https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Acme-Customer-Screens?node-id=42-100"
+        },
+        "intent": "Customer login screen generated from connected library components.",
+        "dimensions": {
+          "width": 1440,
+          "height": 1024
+        },
+        "screenshotRequired": true
+      }
+    ]
+  },
+  "libraries": [
+    {
+      "libraryId": "new-engine-ui",
+      "name": "New Engine Figma UI Library",
+      "fileKey": "NeWEnGiNeUiLiBrArYFiLe",
+      "teamLibraryKey": "teamlib_new_engine_ui",
+      "url": "https://www.figma.com/design/NeWEnGiNeUiLiBrArYFiLe/New-Engine-Figma-UI-Library",
+      "connectedAsAssets": true,
+      "status": "connected",
+      "source": "figma_assets"
+    }
+  ],
+  "discovery": {
+    "source": "fixture",
+    "discoveredAt": "2026-06-02T09:31:00.000Z",
+    "cachePath": "runs/run-2026-06-02-example-login/cache/discovery.json",
+    "nestingMapPath": "runs/run-2026-06-02-example-login/cache/component-nesting-map.json",
+    "nodes": [
+      {
+        "role": "library_component_set",
+        "node": {
+          "nodeId": "200:10",
+          "name": "Button",
+          "type": "COMPONENT_SET",
+          "url": "https://www.figma.com/design/NeWEnGiNeUiLiBrArYFiLe/New-Engine-Figma-UI-Library?node-id=200-10"
+        },
+        "libraryId": "new-engine-ui",
+        "componentSetKey": "button_component_set_key",
+        "propertyNames": ["Variant", "Size", "State"]
+      },
+      {
+        "role": "library_component",
+        "node": {
+          "nodeId": "200:11",
+          "name": "Button / Primary / Medium",
+          "type": "COMPONENT",
+          "url": "https://www.figma.com/design/NeWEnGiNeUiLiBrArYFiLe/New-Engine-Figma-UI-Library?node-id=200-11"
+        },
+        "libraryId": "new-engine-ui",
+        "parentNodeId": "200:10",
+        "componentKey": "button_primary_medium_key",
+        "componentSetKey": "button_component_set_key",
+        "propertyNames": ["Variant", "Size", "State"]
+      },
+      {
+        "role": "target_frame",
+        "node": {
+          "nodeId": "42:100",
+          "name": "Login Screen",
+          "type": "FRAME",
+          "url": "https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Acme-Customer-Screens?node-id=42-100"
+        }
+      }
+    ]
+  },
+  "variables": {
+    "collections": [
+      {
+        "collectionId": "VariableCollectionId:100",
+        "collectionKey": "new_engine_semantic_colors",
+        "name": "Semantic Color",
+        "libraryId": "new-engine-ui",
+        "modes": [
+          {
+            "modeId": "ModeId:1",
+            "name": "Light"
+          },
+          {
+            "modeId": "ModeId:2",
+            "name": "Dark"
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "variableId": "VariableID:component-button-bg-primary",
+        "variableKey": "component_button_bg_primary",
+        "name": "component/button/background/primary",
+        "collectionId": "VariableCollectionId:100",
+        "role": "component",
+        "type": "COLOR",
+        "resolvedModeId": "ModeId:1",
+        "boundNodeIds": ["42:110"],
+        "aliasChain": [
+          {
+            "variableId": "VariableID:component-button-bg-primary",
+            "name": "component/button/background/primary",
+            "role": "component"
+          },
+          {
+            "variableId": "VariableID:semantic-action-primary",
+            "name": "semantic/action/primary",
+            "role": "semantic"
+          },
+          {
+            "variableId": "VariableID:primitive-blue-600",
+            "name": "primitive/blue/600",
+            "role": "primitive"
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": {
+    "outputDir": "runs/run-2026-06-02-example-login/screenshots",
+    "items": [
+      {
+        "screenshotId": "login-screen-default",
+        "targetId": "login-screen",
+        "nodeId": "42:100",
+        "kind": "target",
+        "path": "runs/run-2026-06-02-example-login/screenshots/login-screen.png",
+        "status": "captured",
+        "mimeType": "image/png",
+        "scale": 1,
+        "width": 1440,
+        "height": 1024,
+        "capturedAt": "2026-06-02T09:35:00.000Z"
+      }
+    ]
+  },
+  "artifacts": {
+    "runRoot": "runs/run-2026-06-02-example-login",
+    "cache": {
+      "rootDir": "runs/run-2026-06-02-example-login/cache",
+      "lifetime": "single_run",
+      "disposable": true,
+      "paths": {
+        "discovery": "runs/run-2026-06-02-example-login/cache/discovery.json",
+        "nestingMap": "runs/run-2026-06-02-example-login/cache/component-nesting-map.json",
+        "figmaResponses": "runs/run-2026-06-02-example-login/cache/figma-responses",
+        "variables": "runs/run-2026-06-02-example-login/cache/variables.json"
+      }
+    },
+    "reports": {
+      "outputDir": "reports/run-2026-06-02-example-login",
+      "designRunReportPath": "reports/run-2026-06-02-example-login/design-run-report.json"
+    },
+    "screenshots": {
+      "outputDir": "runs/run-2026-06-02-example-login/screenshots"
+    }
+  }
+}

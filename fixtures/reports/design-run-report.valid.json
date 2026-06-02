@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "run_2026-06-02_login_001",
+  "runContextPath": "reports/run_2026-06-02_login_001/run-context.json",
+  "generatedAt": "2026-06-02T10:15:30.000Z",
+  "status": "needs_iteration",
+  "figmaFile": {
+    "fileKey": "AbCdEfGhIjKlMnOpQrStUv",
+    "name": "Customer Portal Generation Workspace",
+    "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace"
+  },
+  "summary": {
+    "screenCount": 1,
+    "componentUsageCount": 2,
+    "variableUsageCount": 3,
+    "validationIssueCount": 1,
+    "designSystemGapCount": 1,
+    "provisionalExtensionCount": 1,
+    "screenshotCount": 1
+  },
+  "screens": [
+    {
+      "id": "screen-login",
+      "node": {
+        "nodeId": "12:34",
+        "name": "Login",
+        "type": "FRAME",
+        "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-34"
+      },
+      "status": "needs_iteration",
+      "briefReference": "Create a login screen using only library components.",
+      "screenshotIds": ["shot-login-light"],
+      "validationIssueIds": ["val-contrast-001"]
+    }
+  ],
+  "componentsUsed": [
+    {
+      "componentKey": "button-primary-key",
+      "name": "Button / Primary",
+      "source": "library",
+      "componentSetKey": "button-set-key",
+      "variant": {
+        "size": "large",
+        "state": "default"
+      },
+      "propertiesConfigured": {
+        "label": "Sign in"
+      },
+      "usageCount": 1,
+      "instanceNodes": [
+        {
+          "nodeId": "12:56",
+          "name": "Sign in Button",
+          "type": "INSTANCE",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-56"
+        }
+      ]
+    },
+    {
+      "componentKey": "auth-card-provisional-key",
+      "name": "Provisional / Auth Card",
+      "source": "provisional",
+      "usageCount": 1,
+      "instanceNodes": [
+        {
+          "nodeId": "12:40",
+          "name": "Provisional Auth Card",
+          "type": "COMPONENT",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-40"
+        }
+      ]
+    }
+  ],
+  "variablesUsed": [
+    {
+      "variableId": "VariableID:primitive-color-blue-600",
+      "variableKey": "primitive-color-blue-600-key",
+      "name": "primitive/color/blue/600",
+      "collection": "New Engine Primitives",
+      "mode": "Light",
+      "level": "primitive",
+      "resolvedType": "color",
+      "usageCount": 1,
+      "boundNodes": [
+        {
+          "nodeId": "12:56",
+          "name": "Sign in Button",
+          "type": "INSTANCE",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-56"
+        }
+      ]
+    },
+    {
+      "variableId": "VariableID:semantic-action-primary-bg",
+      "variableKey": "semantic-action-primary-bg-key",
+      "name": "semantic/action/primary/background",
+      "collection": "New Engine Semantic",
+      "mode": "Light",
+      "level": "semantic",
+      "resolvedType": "color",
+      "aliasChain": ["primitive/color/blue/600"],
+      "usageCount": 1,
+      "boundNodes": [
+        {
+          "nodeId": "12:56",
+          "name": "Sign in Button",
+          "type": "INSTANCE",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-56"
+        }
+      ]
+    },
+    {
+      "variableId": "VariableID:component-auth-card-bg",
+      "variableKey": "component-auth-card-bg-key",
+      "name": "component/auth-card/background",
+      "collection": "Customer Portal Components",
+      "mode": "Light",
+      "level": "component",
+      "resolvedType": "color",
+      "aliasChain": ["semantic/surface/panel", "primitive/color/neutral/0"],
+      "usageCount": 1,
+      "boundNodes": [
+        {
+          "nodeId": "12:40",
+          "name": "Provisional Auth Card",
+          "type": "COMPONENT",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-40"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "status": "failed",
+    "summary": {
+      "critical": 0,
+      "error": 1,
+      "warning": 0,
+      "info": 0
+    },
+    "issues": [
+      {
+        "id": "val-contrast-001",
+        "code": "CONTRAST_TEXT_SECONDARY",
+        "category": "contrast",
+        "severity": "error",
+        "status": "open",
+        "message": "Secondary help text does not meet the target contrast threshold in Light mode.",
+        "node": {
+          "nodeId": "12:63",
+          "name": "Password help text",
+          "type": "TEXT",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-63"
+        },
+        "expected": "WCAG AA contrast for body text",
+        "actual": "Contrast check failed for the selected semantic text variable.",
+        "recommendation": "Use an existing stronger semantic text variable or add a Design System gap if no suitable token exists."
+      }
+    ]
+  },
+  "designSystemGaps": [
+    {
+      "id": "gap-auth-card",
+      "category": "component",
+      "severity": "medium",
+      "status": "provisional_extension_approved",
+      "summary": "No approved authentication card component exists for a centered login form.",
+      "neededCapability": "A responsive form container with title, body slot, footer actions, and semantic surface variables.",
+      "searchedAlternatives": [
+        {
+          "name": "Card / Default",
+          "result": "Available card does not expose a form body slot or footer action slot."
+        },
+        {
+          "name": "Panel / Form",
+          "result": "Panel supports form spacing but lacks authentication header treatment."
+        }
+      ],
+      "impact": "Login screens require repeated manual composition and inconsistent form container structure.",
+      "relatedNodes": [
+        {
+          "nodeId": "12:40",
+          "name": "Provisional Auth Card",
+          "type": "COMPONENT",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-40"
+        }
+      ],
+      "provisionalExtensionId": "ext-auth-card",
+      "recommendedDesignSystemAction": "Review the provisional component and decide whether it should become an approved authentication pattern."
+    }
+  ],
+  "provisionalExtensions": [
+    {
+      "id": "ext-auth-card",
+      "gapId": "gap-auth-card",
+      "status": "created",
+      "approval": {
+        "required": true,
+        "granted": true,
+        "approvedBy": "operator",
+        "approvedAt": "2026-06-02T10:05:00.000Z"
+      },
+      "proposal": "Create the smallest provisional Auth Card component using existing panel spacing, surface, text, and action variables.",
+      "node": {
+        "nodeId": "12:40",
+        "name": "Provisional Auth Card",
+        "type": "COMPONENT",
+        "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-40"
+      },
+      "provisionalMarking": "Component name is prefixed with Provisional and includes a visible provisional badge in the component description area.",
+      "variableChain": [
+        {
+          "level": "primitive",
+          "variableName": "primitive/color/neutral/0",
+          "variableId": "VariableID:primitive-color-neutral-0"
+        },
+        {
+          "level": "semantic",
+          "variableName": "semantic/surface/panel",
+          "variableId": "VariableID:semantic-surface-panel",
+          "aliasesTo": "primitive/color/neutral/0"
+        },
+        {
+          "level": "component",
+          "variableName": "component/auth-card/background",
+          "variableId": "VariableID:component-auth-card-bg",
+          "aliasesTo": "semantic/surface/panel"
+        }
+      ],
+      "usedByNodes": [
+        {
+          "nodeId": "12:34",
+          "name": "Login",
+          "type": "FRAME",
+          "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-34"
+        }
+      ],
+      "promotionRecommendation": "Promote only if the Design System accepts authentication as a reusable layout pattern; otherwise replace with a standard form panel."
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "shot-login-light",
+      "node": {
+        "nodeId": "12:34",
+        "name": "Login",
+        "type": "FRAME",
+        "url": "https://www.figma.com/file/AbCdEfGhIjKlMnOpQrStUv/Customer-Portal-Generation-Workspace?node-id=12-34"
+      },
+      "path": "reports/run_2026-06-02_login_001/screenshots/login-light.png",
+      "capturedAt": "2026-06-02T10:14:00.000Z",
+      "purpose": "review",
+      "theme": "Default",
+      "mode": "Light",
+      "dimensions": {
+        "width": 1440,
+        "height": 1024
+      }
+    }
+  ],
+  "iterationNotes": [
+    {
+      "id": "note-iteration-001",
+      "iteration": 1,
+      "createdAt": "2026-06-02T10:16:00.000Z",
+      "authorRole": "codex",
+      "category": "validation",
+      "note": "Resolve the secondary text contrast issue before marking the run passed.",
+      "relatedValidationIssueIds": ["val-contrast-001"],
+      "nextAction": "Switch the help text to an approved stronger semantic text variable and recapture the screenshot."
+    },
+    {
+      "id": "note-gap-001",
+      "iteration": 1,
+      "createdAt": "2026-06-02T10:17:00.000Z",
+      "authorRole": "codex",
+      "category": "gap",
+      "note": "Auth Card should be reviewed as a possible reusable Design System pattern.",
+      "relatedGapIds": ["gap-auth-card"],
+      "relatedProvisionalExtensionIds": ["ext-auth-card"],
+      "nextAction": "Add the gap to the Design System backlog after operator review."
+    }
+  ]
+}

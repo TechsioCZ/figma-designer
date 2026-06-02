@@ -1,0 +1,55 @@
+{
+  "kind": "figma-layout-fixture",
+  "source": "fixture",
+  "root": {
+    "id": "0:0",
+    "name": "Customer Screens",
+    "type": "PAGE",
+    "children": [
+      {
+        "id": "40:1",
+        "name": "Settings / Desktop",
+        "type": "FRAME",
+        "layoutRole": "page",
+        "layoutMode": "VERTICAL",
+        "primaryAxisAlignItems": "MIN",
+        "counterAxisAlignItems": "MIN",
+        "children": [
+          {
+            "id": "40:2",
+            "name": "Settings section",
+            "type": "SECTION",
+            "layoutRole": "section",
+            "layoutMode": "VERTICAL",
+            "primaryAxisAlignItems": "MIN",
+            "counterAxisAlignItems": "MIN",
+            "layoutSizingHorizontal": "FIXED",
+            "editable": false,
+            "locked": true,
+            "children": [
+              {
+                "id": "40:3",
+                "name": "Settings panel",
+                "type": "FRAME",
+                "layoutRole": "container",
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "MIN",
+                "counterAxisAlignItems": "MIN",
+                "layoutSizingHorizontal": "FIXED",
+                "children": [
+                  {
+                    "id": "40:4",
+                    "name": "Floating save button",
+                    "type": "INSTANCE",
+                    "componentKey": "button-primary-medium-key",
+                    "layoutPositioning": "ABSOLUTE"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

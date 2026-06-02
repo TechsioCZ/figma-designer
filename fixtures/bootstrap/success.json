@@ -1,0 +1,74 @@
+{
+  "fileKey": "bootstrap-success-file",
+  "file": {
+    "key": "bootstrap-success-file",
+    "name": "Bootstrap Success Fixture",
+    "document": {
+      "type": "DOCUMENT",
+      "children": [
+        {
+          "id": "0:1",
+          "name": "Generation Workspace",
+          "type": "PAGE",
+          "children": [
+            {
+              "id": "10:1",
+              "name": "Bootstrap Probe Frame",
+              "type": "FRAME",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    "libraries": [
+      {
+        "libraryId": "new-engine-ui",
+        "name": "New Engine Figma UI Library",
+        "connectedAsAssets": true,
+        "status": "connected",
+        "source": "fixture"
+      }
+    ],
+    "bootstrap": {
+      "screenshotNodeIds": ["10:1"]
+    }
+  },
+  "generationPage": "Generation Workspace",
+  "libraryName": "New Engine Figma UI Library",
+  "canWrite": true,
+  "canScreenshot": true,
+  "components": [
+    {
+      "key": "button-primary-key",
+      "node_id": "200:11",
+      "name": "Button / Primary / Medium"
+    }
+  ],
+  "componentSets": [
+    {
+      "key": "button-set-key",
+      "node_id": "200:10",
+      "name": "Button"
+    }
+  ],
+  "variables": {
+    "meta": {
+      "variables": {
+        "VariableID:button-bg": {
+          "id": "VariableID:button-bg",
+          "name": "component/button/background/primary"
+        }
+      },
+      "variableCollections": {
+        "VariableCollectionId:semantic-color": {
+          "id": "VariableCollectionId:semantic-color",
+          "name": "Semantic Color"
+        }
+      }
+    }
+  },
+  "images": {
+    "10:1": "https://example.com/bootstrap-probe.png"
+  }
+}

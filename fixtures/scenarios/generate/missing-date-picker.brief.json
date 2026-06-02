@@ -1,0 +1,10 @@
+{
+  "briefId": "brief-missing-date-picker",
+  "runId": "run-generate-missing-date-picker",
+  "title": "Booking Date Screen",
+  "description": "Create a booking screen that requires a date picker control.",
+  "intent": "booking",
+  "screenName": "Booking Date Screen",
+  "targetId": "booking-date-screen",
+  "requiredComponents": ["Date Picker"]
+}

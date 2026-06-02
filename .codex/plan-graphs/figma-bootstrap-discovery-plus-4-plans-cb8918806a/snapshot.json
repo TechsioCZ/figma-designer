@@ -1,0 +1,371 @@
+{
+  "generated_at": "2026-06-02T11:20:49.324296+00:00",
+  "graph_id": "figma-bootstrap-discovery-plus-4-plans-cb8918806a",
+  "plan_set_hash": "2c7de1fc23",
+  "selection_hash": "cb8918806a",
+  "plan_count": 5,
+  "edge_count": 6,
+  "plans_root": ".codex/plans",
+  "selected_globs": [
+    "*.plan.md"
+  ],
+  "selected_plan_paths": [
+    "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-bootstrap-discovery.plan.md",
+    "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-generate-validate.plan.md",
+    "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-report-iterate.plan.md",
+    "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-rule-skills.plan.md",
+    "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-template-foundation.plan.md"
+  ],
+  "edges": [
+    {
+      "source": "figma-template-foundation",
+      "target": "figma-bootstrap-discovery"
+    },
+    {
+      "source": "figma-template-foundation",
+      "target": "figma-rule-skills"
+    },
+    {
+      "source": "figma-bootstrap-discovery",
+      "target": "figma-rule-skills"
+    },
+    {
+      "source": "figma-bootstrap-discovery",
+      "target": "figma-generate-validate"
+    },
+    {
+      "source": "figma-rule-skills",
+      "target": "figma-generate-validate"
+    },
+    {
+      "source": "figma-generate-validate",
+      "target": "figma-report-iterate"
+    }
+  ],
+  "plans": [
+    {
+      "path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-bootstrap-discovery.plan.md",
+      "slug": "figma-bootstrap-discovery",
+      "name": "figma-bootstrap-discovery",
+      "overview": "Implement the Figma connection checks, live library discovery workflow, run cache, and ephemeral component nesting map required before Codex can compose customer screens.",
+      "todos": [
+        {
+          "id": "wrap-figma-use",
+          "content": "Create the base `/figma-use` integration wrapper or skill dependency so all Figma actions share the same MCP/API access pattern and error handling.",
+          "status": "completed",
+          "ordinal": 1
+        },
+        {
+          "id": "implement-bootstrap-check",
+          "content": "Add `/figma-bootstrap-check` to verify MCP/API connectivity, write access to the Generation Workspace, connected Figma UI Library Assets, component discovery, variable discovery, screenshot capability, and report output.",
+          "status": "completed",
+          "ordinal": 2
+        },
+        {
+          "id": "add-bootstrap-tests",
+          "content": "Add tests or scripted fixtures for successful bootstrap and failure messages when MCP/API access, write access, library Assets, variables, screenshots, or report output are unavailable.",
+          "status": "completed",
+          "ordinal": 3
+        },
+        {
+          "id": "implement-live-discovery",
+          "content": "Add `/figma-discover-library` to read components, component sets, variants, component properties, slots, variables, modes, styles, examples, and approved patterns from the connected Figma UI Library per run.",
+          "status": "completed",
+          "ordinal": 4
+        },
+        {
+          "id": "build-nesting-map",
+          "content": "Add `/figma-map-component-nesting` to generate an ephemeral Component Nesting Map covering nested components, slots, variable bindings, component properties, and safe instance configuration paths.",
+          "status": "completed",
+          "ordinal": 5
+        },
+        {
+          "id": "implement-run-cache",
+          "content": "Add a per-run cache lifecycle for discovery and nesting outputs, including cache creation, cache lookup, cache cleanup, and safeguards that prevent cache files from becoming a source of truth.",
+          "status": "completed",
+          "ordinal": 6
+        },
+        {
+          "id": "add-discovery-tests",
+          "content": "Add discovery seam tests that verify components, variants, properties, slots, nested components, variables, modes, and styles are read from live or fixture-backed Figma data.",
+          "status": "completed",
+          "ordinal": 7
+        }
+      ],
+      "is_project": false,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-generate-validate.plan.md",
+      "slug": "figma-generate-validate",
+      "name": "figma-generate-validate",
+      "overview": "Build the skills and validators that turn a brief into Figma screens while enforcing Strict Composition Mode and catching design-system, variable, accessibility, layout, theme, and prototype violations.",
+      "todos": [
+        {
+          "id": "implement-create-design",
+          "content": "Add `/figma-generate-design` to turn a brief into frames, screens, and prototypes inside the Generation Workspace using discovered library components, variants, properties, slots, variables, styles, and approved patterns.",
+          "status": "completed",
+          "ordinal": 1
+        },
+        {
+          "id": "implement-extension-approval-flow",
+          "content": "Add the runtime flow that searches existing assets first, logs a Design System Gap, proposes the smallest Provisional Extension, asks for approval, and only then creates provisional Figma output.",
+          "status": "completed",
+          "ordinal": 2
+        },
+        {
+          "id": "implement-validator-entrypoint",
+          "content": "Add `/figma-validate-design` and a validator entrypoint that can inspect generated Figma nodes and emit structured validation results tied to node IDs and links.",
+          "status": "completed",
+          "ordinal": 3
+        },
+        {
+          "id": "validate-component-integrity",
+          "content": "Implement validation for detached components, non-library instances, invalid variant or property usage, unsafe nested content, slot misuse, and unapproved provisional output.",
+          "status": "completed",
+          "ordinal": 4
+        },
+        {
+          "id": "validate-variables-themes-contrast",
+          "content": "Implement validation for raw visual values, broken variable aliases, primitive to semantic to component chain compliance, theme and mode resolution, and contrast expectations.",
+          "status": "completed",
+          "ordinal": 5
+        },
+        {
+          "id": "validate-layout-spacing-prototype",
+          "content": "Implement validation for auto-layout hygiene, resizing behavior, page and form spacing rules, responsive editability, and prototype dead ends.",
+          "status": "completed",
+          "ordinal": 6
+        },
+        {
+          "id": "add-scenario-tests",
+          "content": "Add scenario tests for login, checkout form spacing, dashboard page spacing, missing component approval, slot misuse rejection, raw hex rejection, detach rejection, and theme or mode switching.",
+          "status": "completed",
+          "ordinal": 7
+        }
+      ],
+      "is_project": false,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-report-iterate.plan.md",
+      "slug": "figma-report-iterate",
+      "name": "figma-report-iterate",
+      "overview": "Implement screenshot capture, structured Design Run Reports, Design System Gap logging, and the iteration workflow that uses validation failures to improve generated Figma output.",
+      "todos": [
+        {
+          "id": "implement-screenshot-report",
+          "content": "Add `/figma-screenshot-report` to capture screenshots of generated frames and attach screenshot references to node IDs, Figma links, validation results, component usage, variable usage, gaps, and iteration notes.",
+          "status": "completed",
+          "ordinal": 1
+        },
+        {
+          "id": "write-design-run-report",
+          "content": "Generate Design Run Reports in machine-readable and operator-readable formats using the shared report schema, including created screens, validation status, screenshots, components, variables, gaps, provisional extensions, and suggested Design System improvements.",
+          "status": "completed",
+          "ordinal": 2
+        },
+        {
+          "id": "implement-gap-log",
+          "content": "Add a Design System Gap log format that can be aggregated later and includes missing asset or pattern evidence, searched alternatives, impact, proposed smallest extension, approval state, and related Figma nodes.",
+          "status": "completed",
+          "ordinal": 3
+        },
+        {
+          "id": "implement-iterate-design",
+          "content": "Add `/figma-iterate-design` to read validation failures, report data, screenshots, and gap notes, then apply approved improvements to the Figma output without weakening Strict Composition Mode.",
+          "status": "completed",
+          "ordinal": 4
+        },
+        {
+          "id": "add-report-tests",
+          "content": "Add report seam tests that verify screenshots, node IDs, Figma links, components used, variables used, validation results, gaps, violations, suggested improvements, and iteration notes are present.",
+          "status": "completed",
+          "ordinal": 5
+        },
+        {
+          "id": "add-v0-end-to-end",
+          "content": "Add a v0 end-to-end scenario where an empty Generation Workspace and connected Figma UI Library produce one customer screen from a brief, validate it, screenshot it, report gaps, and propose the next iteration.",
+          "status": "completed",
+          "ordinal": 6
+        },
+        {
+          "id": "write-operator-runbook",
+          "content": "Document the full operator runbook from brief through bootstrap, discovery, planning, creation, validation, screenshots, reporting, and iteration.",
+          "status": "completed",
+          "ordinal": 7
+        }
+      ],
+      "is_project": false,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-rule-skills.plan.md",
+      "slug": "figma-rule-skills",
+      "name": "figma-rule-skills",
+      "overview": "Author the explicit Codex skills and rule artifacts that enforce component usage, layout, spacing, variable-chain, and provisional-extension behavior during Figma design runs.",
+      "todos": [
+        {
+          "id": "author-component-rules",
+          "content": "Add `/figma-component-rules` with rules for using library instances, avoiding detaches, configuring variants through component properties, placing nested content through slots, and detecting unsafe freehand composition.",
+          "status": "completed",
+          "ordinal": 1
+        },
+        {
+          "id": "author-layout-rules",
+          "content": "Add `/figma-layout-rules` with rules for page layout, sections, containers, auto-layout direction, alignment, resizing behavior, responsive expectations, and editable frame structure.",
+          "status": "completed",
+          "ordinal": 2
+        },
+        {
+          "id": "author-spacing-rules",
+          "content": "Add `/figma-spacing-rules` with rules for spacing between form items, field groups, page sections, cards, panels, headers, footers, and interactive control clusters.",
+          "status": "completed",
+          "ordinal": 3
+        },
+        {
+          "id": "encode-variable-chain-policy",
+          "content": "Define enforceable guidance for primitive to semantic to component variables, preferring existing semantic variables, creating component variables only when needed, and rejecting raw final UI values when variable chains exist.",
+          "status": "completed",
+          "ordinal": 4
+        },
+        {
+          "id": "define-provisional-extension-protocol",
+          "content": "Document the required approval gate, smallest-extension proposal format, provisional visual and structural marking, variable-chain requirements, and report fields for Provisional Extensions.",
+          "status": "completed",
+          "ordinal": 5
+        },
+        {
+          "id": "add-rule-loading-workflow",
+          "content": "Wire the rule skills so generation, validation, screenshot reporting, and iteration can load the same rule set and discovered library context without duplicating rule text.",
+          "status": "completed",
+          "ordinal": 6
+        },
+        {
+          "id": "add-rule-tests",
+          "content": "Add tests or fixtures that prove the rules reject detaches, invalid slot usage, raw colors, broken variable chains, invalid spacing, and unapproved Provisional Extensions.",
+          "status": "completed",
+          "ordinal": 7
+        }
+      ],
+      "is_project": false,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-template-foundation.plan.md",
+      "slug": "figma-template-foundation",
+      "name": "figma-template-foundation",
+      "overview": "Establish the repository structure, shared contracts, schemas, and operator documentation for the Codex Figma Skills Template before feature-specific skills are implemented.",
+      "todos": [
+        {
+          "id": "define-repo-structure",
+          "content": "Create the repository directories for Codex skills, Figma MCP/API workflows, validators, report schemas, run caches, fixtures, screenshots, and design run reports.",
+          "status": "completed",
+          "ordinal": 1
+        },
+        {
+          "id": "document-strict-composition",
+          "content": "Write the core operating rules for Figma-First Sandbox Mode, Strict Composition Mode, live library source of truth, no detaching, slot usage, variable chains, and provisional extension approval.",
+          "status": "completed",
+          "ordinal": 2
+        },
+        {
+          "id": "define-run-context-contract",
+          "content": "Define the run context format for Figma file identifiers, Generation Workspace targets, connected library references, discovered node IDs, variable references, screenshot outputs, and ephemeral run cache paths.",
+          "status": "completed",
+          "ordinal": 3
+        },
+        {
+          "id": "define-report-schema",
+          "content": "Add machine-readable schemas for Design Run Reports, validation issues, component and variable usage, Design System Gaps, Provisional Extensions, screenshots, and iteration notes.",
+          "status": "completed",
+          "ordinal": 4
+        },
+        {
+          "id": "add-command-harness",
+          "content": "Add local commands or scripts that can run bootstrap, discovery, validation, screenshot reporting, and scenario tests against mocked or real Figma access without changing the command surface later.",
+          "status": "completed",
+          "ordinal": 5
+        },
+        {
+          "id": "write-template-readme",
+          "content": "Document the cloneable template workflow, prerequisites, environment setup, expected Figma Assets connection, and the full Brief to Iterate operator loop.",
+          "status": "completed",
+          "ordinal": 6
+        }
+      ],
+      "is_project": false,
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "frontier": [
+    {
+      "plan_slug": "figma-bootstrap-discovery",
+      "plan_name": "figma-bootstrap-discovery",
+      "plan_path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-bootstrap-discovery.plan.md",
+      "plan_status": "completed",
+      "state": "done",
+      "blocked_by": [],
+      "active": [],
+      "upcoming": [],
+      "completed": 7,
+      "total": 7
+    },
+    {
+      "plan_slug": "figma-generate-validate",
+      "plan_name": "figma-generate-validate",
+      "plan_path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-generate-validate.plan.md",
+      "plan_status": "completed",
+      "state": "done",
+      "blocked_by": [],
+      "active": [],
+      "upcoming": [],
+      "completed": 7,
+      "total": 7
+    },
+    {
+      "plan_slug": "figma-report-iterate",
+      "plan_name": "figma-report-iterate",
+      "plan_path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-report-iterate.plan.md",
+      "plan_status": "completed",
+      "state": "done",
+      "blocked_by": [],
+      "active": [],
+      "upcoming": [],
+      "completed": 7,
+      "total": 7
+    },
+    {
+      "plan_slug": "figma-rule-skills",
+      "plan_name": "figma-rule-skills",
+      "plan_path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-rule-skills.plan.md",
+      "plan_status": "completed",
+      "state": "done",
+      "blocked_by": [],
+      "active": [],
+      "upcoming": [],
+      "completed": 7,
+      "total": 7
+    },
+    {
+      "plan_slug": "figma-template-foundation",
+      "plan_name": "figma-template-foundation",
+      "plan_path": "/Users/satan/side/experiments/figma-designer/.codex/plans/figma-template-foundation.plan.md",
+      "plan_status": "completed",
+      "state": "done",
+      "blocked_by": [],
+      "active": [],
+      "upcoming": [],
+      "completed": 6,
+      "total": 6
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "graph_source": "matched-plan-set"
+}

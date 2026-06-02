@@ -1,0 +1,57 @@
+{
+  "kind": "figma-layout-fixture",
+  "source": "fixture",
+  "root": {
+    "id": "0:0",
+    "name": "Customer Screens",
+    "type": "PAGE",
+    "children": [
+      {
+        "id": "50:1",
+        "name": "Search / Desktop",
+        "type": "FRAME",
+        "layoutRole": "page",
+        "layoutMode": "VERTICAL",
+        "primaryAxisAlignItems": "MIN",
+        "counterAxisAlignItems": "MIN",
+        "children": [
+          {
+            "id": "50:2",
+            "name": "Search section",
+            "type": "SECTION",
+            "layoutRole": "section",
+            "layoutMode": "VERTICAL",
+            "primaryAxisAlignItems": "MIN",
+            "counterAxisAlignItems": "MIN",
+            "layoutSizingHorizontal": "FILL",
+            "children": [
+              {
+                "id": "50:3",
+                "name": "Fake search input",
+                "type": "FRAME",
+                "layoutRole": "customPrimitive",
+                "customPrimitive": true,
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": "MIN",
+                "counterAxisAlignItems": "CENTER",
+                "layoutSizingHorizontal": "FILL",
+                "children": [
+                  {
+                    "id": "50:4",
+                    "name": "Input background",
+                    "type": "RECTANGLE"
+                  },
+                  {
+                    "id": "50:5",
+                    "name": "Placeholder",
+                    "type": "TEXT"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,468 @@
+{
+  "fileKey": "CustomerFileFixture",
+  "fileName": "Customer Design Fixture",
+  "libraryName": "New Engine Figma UI Library",
+  "canWrite": true,
+  "canScreenshot": true,
+  "components": [
+    {
+      "key": "button-primary-medium-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "200:11",
+      "name": "Button / Variant=Primary, Size=Medium, State=Default",
+      "description": "Primary medium button variant.",
+      "componentSetId": "200:10",
+      "componentSetKey": "button-set-key"
+    },
+    {
+      "key": "button-secondary-medium-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "200:21",
+      "name": "Button / Variant=Secondary, Size=Medium, State=Default",
+      "description": "Secondary medium button variant.",
+      "componentSetId": "200:10",
+      "componentSetKey": "button-set-key"
+    },
+    {
+      "key": "text-field-default-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "210:11",
+      "name": "Text Field / State=Default",
+      "description": "Default text field variant.",
+      "componentSetId": "210:10",
+      "componentSetKey": "text-field-set-key"
+    },
+    {
+      "key": "icon-search-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "300:1",
+      "name": "Icon / Search",
+      "description": "Search icon."
+    }
+  ],
+  "componentSets": [
+    {
+      "key": "button-set-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "200:10",
+      "name": "Button",
+      "description": "Button component set."
+    },
+    {
+      "key": "text-field-set-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "210:10",
+      "name": "Text Field",
+      "description": "Text field component set."
+    }
+  ],
+  "styles": [
+    {
+      "key": "style-text-body-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "500:1",
+      "name": "Text/Body",
+      "style_type": "TEXT",
+      "description": "Default body text style."
+    },
+    {
+      "key": "style-effect-focus-key",
+      "file_key": "LibraryFileFixture",
+      "node_id": "500:2",
+      "name": "Effect/Focus Ring",
+      "style_type": "EFFECT",
+      "description": "Interactive focus ring."
+    }
+  ],
+  "variables": {
+    "meta": {
+      "variableCollections": {
+        "VariableCollectionId:colors": {
+          "id": "VariableCollectionId:colors",
+          "key": "collection-colors-key",
+          "name": "Color",
+          "modes": [
+            {
+              "modeId": "ModeId:light",
+              "name": "Light"
+            },
+            {
+              "modeId": "ModeId:dark",
+              "name": "Dark"
+            }
+          ]
+        },
+        "VariableCollectionId:spacing": {
+          "id": "VariableCollectionId:spacing",
+          "key": "collection-spacing-key",
+          "name": "Spacing",
+          "modes": [
+            {
+              "modeId": "ModeId:default",
+              "name": "Default"
+            }
+          ]
+        }
+      },
+      "variables": {
+        "VariableID:primitive-blue-600": {
+          "id": "VariableID:primitive-blue-600",
+          "key": "primitive-blue-600-key",
+          "name": "primitive/blue/600",
+          "variableCollectionId": "VariableCollectionId:colors",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "ModeId:light": {
+              "r": 0.1,
+              "g": 0.28,
+              "b": 0.8,
+              "a": 1
+            },
+            "ModeId:dark": {
+              "r": 0.45,
+              "g": 0.62,
+              "b": 1,
+              "a": 1
+            }
+          }
+        },
+        "VariableID:semantic-action-primary": {
+          "id": "VariableID:semantic-action-primary",
+          "key": "semantic-action-primary-key",
+          "name": "semantic/action/primary",
+          "variableCollectionId": "VariableCollectionId:colors",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "ModeId:light": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:primitive-blue-600"
+            },
+            "ModeId:dark": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:primitive-blue-600"
+            }
+          }
+        },
+        "VariableID:component-button-bg-primary": {
+          "id": "VariableID:component-button-bg-primary",
+          "key": "component-button-bg-primary-key",
+          "name": "component/button/background/primary",
+          "variableCollectionId": "VariableCollectionId:colors",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "ModeId:light": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:semantic-action-primary"
+            },
+            "ModeId:dark": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:semantic-action-primary"
+            }
+          }
+        },
+        "VariableID:spacing-200": {
+          "id": "VariableID:spacing-200",
+          "key": "spacing-200-key",
+          "name": "primitive/spacing/200",
+          "variableCollectionId": "VariableCollectionId:spacing",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "ModeId:default": 8
+          }
+        }
+      }
+    }
+  },
+  "file": {
+    "key": "CustomerFileFixture",
+    "name": "Customer Design Fixture",
+    "libraryFileKey": "LibraryFileFixture",
+    "examples": [
+      {
+        "nodeId": "400:99",
+        "name": "Direct Fixture Example",
+        "type": "FRAME",
+        "componentProperties": {
+          "FixtureOnly": {
+            "type": "TEXT",
+            "value": "direct"
+          }
+        }
+      }
+    ],
+    "approvedPatterns": [
+      {
+        "patternId": "direct-fixture-pattern",
+        "nodeId": "410:99",
+        "name": "Direct Fixture Pattern",
+        "description": "Pattern supplied by the fixture payload."
+      }
+    ],
+    "document": {
+      "id": "0:0",
+      "name": "Document",
+      "type": "DOCUMENT",
+      "children": [
+        {
+          "id": "100:1",
+          "name": "Library",
+          "type": "PAGE",
+          "children": [
+            {
+              "id": "200:10",
+              "name": "Button",
+              "type": "COMPONENT_SET",
+              "componentPropertyDefinitions": {
+                "Variant": {
+                  "type": "VARIANT",
+                  "defaultValue": "Primary",
+                  "variantOptions": ["Primary", "Secondary"]
+                },
+                "Size": {
+                  "type": "VARIANT",
+                  "defaultValue": "Medium",
+                  "variantOptions": ["Small", "Medium", "Large"]
+                },
+                "State": {
+                  "type": "VARIANT",
+                  "defaultValue": "Default",
+                  "variantOptions": ["Default", "Hover", "Disabled"]
+                },
+                "LeadingIcon#200:12": {
+                  "type": "INSTANCE_SWAP",
+                  "defaultValue": "300:1",
+                  "preferredValues": [
+                    {
+                      "type": "COMPONENT",
+                      "key": "icon-search-key"
+                    }
+                  ],
+                  "description": "Slot for the leading icon."
+                },
+                "Label#200:14": {
+                  "type": "TEXT",
+                  "defaultValue": "Continue"
+                }
+              },
+              "children": [
+                {
+                  "id": "200:11",
+                  "name": "Button / Variant=Primary, Size=Medium, State=Default",
+                  "type": "COMPONENT",
+                  "componentSetId": "200:10",
+                  "variantProperties": {
+                    "Variant": "Primary",
+                    "Size": "Medium",
+                    "State": "Default"
+                  },
+                  "componentPropertyDefinitions": {
+                    "LeadingIcon#200:12": {
+                      "type": "INSTANCE_SWAP",
+                      "defaultValue": "300:1",
+                      "preferredValues": [
+                        {
+                          "type": "COMPONENT",
+                          "key": "icon-search-key"
+                        }
+                      ],
+                      "description": "Slot for the leading icon."
+                    },
+                    "Label#200:14": {
+                      "type": "TEXT",
+                      "defaultValue": "Continue"
+                    }
+                  },
+                  "boundVariables": {
+                    "fills": [
+                      {
+                        "type": "VARIABLE_ALIAS",
+                        "id": "VariableID:component-button-bg-primary"
+                      }
+                    ]
+                  },
+                  "children": [
+                    {
+                      "id": "200:12",
+                      "name": "Slot / Leading Icon",
+                      "type": "FRAME",
+                      "isSlot": true,
+                      "componentPropertyReferences": {
+                        "mainComponent": "LeadingIcon#200:12"
+                      },
+                      "children": [
+                        {
+                          "id": "200:13",
+                          "name": "Nested Icon Instance",
+                          "type": "INSTANCE",
+                          "componentId": "300:1",
+                          "componentProperties": {
+                            "IconName#300:2": {
+                              "type": "TEXT",
+                              "value": "search"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "200:21",
+                  "name": "Button / Variant=Secondary, Size=Medium, State=Default",
+                  "type": "COMPONENT",
+                  "componentSetId": "200:10",
+                  "variantProperties": {
+                    "Variant": "Secondary",
+                    "Size": "Medium",
+                    "State": "Default"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "210:10",
+              "name": "Text Field",
+              "type": "COMPONENT_SET",
+              "componentPropertyDefinitions": {
+                "State": {
+                  "type": "VARIANT",
+                  "defaultValue": "Default",
+                  "variantOptions": ["Default", "Error", "Disabled"]
+                },
+                "HelperTextVisible#210:12": {
+                  "type": "BOOLEAN",
+                  "defaultValue": true
+                },
+                "TrailingAction#210:13": {
+                  "type": "INSTANCE_SWAP",
+                  "defaultValue": "200:11",
+                  "preferredValues": [
+                    {
+                      "type": "COMPONENT_SET",
+                      "key": "button-set-key"
+                    }
+                  ],
+                  "description": "Slot for trailing field action."
+                }
+              },
+              "children": [
+                {
+                  "id": "210:11",
+                  "name": "Text Field / State=Default",
+                  "type": "COMPONENT",
+                  "componentSetId": "210:10",
+                  "variantProperties": {
+                    "State": "Default"
+                  },
+                  "componentPropertyDefinitions": {
+                    "TrailingAction#210:13": {
+                      "type": "INSTANCE_SWAP",
+                      "defaultValue": "200:11",
+                      "preferredValues": [
+                        {
+                          "type": "COMPONENT_SET",
+                          "key": "button-set-key"
+                        }
+                      ],
+                      "description": "Slot for trailing field action."
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "210:13",
+                      "name": "Slot / Trailing Action",
+                      "type": "FRAME",
+                      "isSlot": true,
+                      "componentPropertyReferences": {
+                        "mainComponent": "TrailingAction#210:13"
+                      },
+                      "children": [
+                        {
+                          "id": "210:14",
+                          "name": "Nested Button Instance",
+                          "type": "INSTANCE",
+                          "componentId": "200:11",
+                          "componentProperties": {
+                            "Label#200:14": {
+                              "type": "TEXT",
+                              "value": "Apply"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "300:1",
+              "name": "Icon / Search",
+              "type": "COMPONENT",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "400:1",
+          "name": "Examples",
+          "type": "PAGE",
+          "children": [
+            {
+              "id": "400:2",
+              "name": "Login Form Example",
+              "type": "FRAME",
+              "children": [
+                {
+                  "id": "400:3",
+                  "name": "Submit Button Example",
+                  "type": "INSTANCE",
+                  "componentId": "200:11",
+                  "componentProperties": {
+                    "Label#200:14": {
+                      "type": "TEXT",
+                      "value": "Sign in"
+                    },
+                    "LeadingIcon#200:12": {
+                      "type": "INSTANCE_SWAP",
+                      "value": "300:1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "410:1",
+          "name": "Approved Patterns",
+          "type": "PAGE",
+          "children": [
+            {
+              "id": "410:2",
+              "name": "Login Form Pattern",
+              "type": "FRAME",
+              "children": [
+                {
+                  "id": "410:3",
+                  "name": "Email Field",
+                  "type": "INSTANCE",
+                  "componentId": "210:11",
+                  "componentProperties": {}
+                },
+                {
+                  "id": "410:4",
+                  "name": "Submit Button",
+                  "type": "INSTANCE",
+                  "componentId": "200:11",
+                  "componentProperties": {}
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
